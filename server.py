@@ -1,6 +1,6 @@
 """Server for movie ratings app."""
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
+                   redirect,jsonify)
 
 from model import connect_to_db
 import crud
@@ -12,8 +12,16 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def homepage():
+    
+    return render_template ('index.html')
+
+@app.route('/api/cities')
+def all_cities():
     cities = crud.all_cities()
-    return render_template ('index.html', cities = cities)
+    
+    return jsonify(cities)
+
+
 
 @app.route('/sign-up', methods=['POST'])
 def handle_sign_up():
@@ -34,8 +42,19 @@ def handle_sign_up():
         flash('Account created! Please log in.')
 
     
-
+    return jsonify(
+        {"name" : name,
+        "phone" :phone,
+        "street_address" : street_address,
+        "user_city" : user_city,
+        "email" : email,
+        "password" : password
+        }
+    )
     # return redirect('/')
+
+
+
 
 @app.route('/sign-in')
 def handle_sign_in():

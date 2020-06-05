@@ -1,74 +1,45 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link rel="stylesheet"
+        href="/static/css/homepage.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Food App</title>
-    <!-- <link rel="stylesheet" href="/static/css/style.css"> -->
-    <style>
-      .attempt {
-        background-color: solid gray;
-        width: 300px;
-        border: 15px solid gray;
-        padding: 50px;
-        margin: 20px;
-        }
-    </style>
-    <script
-      src="http://code.jquery.com/jquery-3.5.1.js"
-      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-      crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"> </script>
+
+      <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+      <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+      <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+      <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+      <script src="https://unpkg.com/react-router/umd/react-router.min.js"></script>
+
+      <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+      <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+      
   </head>
+
   <body>
     <header>
       <h1>Welcome to trial run of My_Food_App !</h1>
     </header>
 
-    <main>
-      <div>
-      <label for = "locations"> Choose a city: </label>
-      <select name = "cities" id = "cities">
-        {% for city in cities %}
-        <option value = "cities"> {{city.city_name}}</option>
-        {% endfor %}
-      </select>
-      <a href="/users" method = "POST">
-      <button style = "margin-left:250px;" id="sign-in">Sign In</button>
-      </a>
-      <button style = "margin:10px;" id="sign-up">Sign Up</button>
+    
+      <div id="root">  </div>
+        <script type ="text/babel">
 
-      </div>
-      
-      <div>
-        <form id = search-listings> 
-
-          <label for= "search-listings"> Dish/ category/ cuisine </label>
-          <input type="text" id="search-listing" name="search-listing">
-
-          </form>
-      </div>
-      <br>
-       <div>
-        <label for = "filter"></label>
-        <select  style = "margin-left:500px;" name = "filter" id = "filter">
-          <option value = "filter">Location</option> 
-        </select>
-       </div>
-
-
-      <section id="listings">
-        <h1>Current Listings</h1>
-        <div class="attempt">
-            <ul>
-              <li>listing_name</li>
-              <li>listing_category</li>
-          </ul>
-        </div>    
-      </section>
-
-      <section style="margin-top: 200px;" id="your-cart">
-        <button id="orders">Orders</button>
-
-    <script src="/static/js/foodApp.js"></script>
+       
+        ReactDOM.render(
+          <h1>Hello, world!</h1>,
+          document.getElementById('root')
+        );
+      </script>
+     
+     
+    <script type = "text/jsx" src="/static/js/foodApp.jsx"></script>
+    
   </body>
 </html>
