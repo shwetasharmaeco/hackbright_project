@@ -1,6 +1,6 @@
 """Server for movie ratings app."""
 from flask import (Flask, render_template, request, flash, session,
-                   redirect,jsonify)
+                   redirect,jsonify,json)
 
 from model import connect_to_db
 import crud
@@ -23,57 +23,45 @@ def all_cities():
 
 
 
-@app.route('/sign-up', methods=['POST'])
+@app.route('/sign-up', methods=['POST',"GET"])
 def handle_sign_up():
     """Create a new user."""
-    name = request.form.get('user_name')
-    phone = request.form.get('phone')
-    street_address = request.form.get('street_address')
-    user_city = request.form.get('city')
-    # if user_city not in cities table #
-    email = request.form.get('email')
-    password = request.form.get('password')
 
-    user = crud.get_user_by_email(email)
-    if user:
-        flash('Cannot create an account with that email. Try again.')
-    else:
-        crud.create_user(name, phone, street_address, email,password, user_city)
-        flash('Account created! Please log in.')
-
+    data = request.get_json()
+    user = crud.get_user_by_email(data["email"])
     
-    return jsonify(
-        {"name" : name,
-        "phone" :phone,
-        "street_address" : street_address,
-        "user_city" : user_city,
-        "email" : email,
-        "password" : password
-        }
-    )
-    # return redirect('/')
+
+    if user:
+        return jsonify('Cannot create an account with that email. Try again.')
+    else:
+        if data["city"] not in crud.use():
+            return jsonify("We are not currently operating in your city")
+        else:
+            crud.create_user(data["name"], data["number"], data["address"], data["email"],data["password"], data["city"])
+            return jsonify( f'Account created! Please log in {data["name"]}')
 
 
 
 
-@app.route('/sign-in')
+@app.route('/sign-in', methods=["POST","GET"])
 def handle_sign_in():
     """Log user into application."""
 
-    email = request.form['email']
-    password = request.form['password']
-
-    user = crud.get_user_by_email(email)
-
+    data = request.get_json()
+    user = crud.get_user_by_email(data["email"])
+    
     if user:
-
-        if user.password == password and user.email == email:
-            flash(f'Logged in as {email}')
+        
+        if user.password == data["password"] and user.email == data["email"]:
+            session["user_id"] = user.user_id
+            return jsonify(f'Logged in as {user.name}')
         else:
-            flash('Wrong email or password!')
+            return jsonify('Wrong email or password!')
     else:
-        flash("email doesn't exist")
-    return redirect ('/')
+        
+        return jsonify("email doesn't exist")
+   
+  
 
 
 

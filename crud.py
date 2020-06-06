@@ -85,6 +85,13 @@ def get_listing_by_id(listing_id):
 def all_cities():
     return City.query.all()
 
+
+cities_list=[]
+def use():
+    for city in all_cities():
+        cities_list.append(city.city_name)
+    return cities_list
+
 def all_orders():
     return Order.query.all()
 
