@@ -41,11 +41,10 @@ class User(db.Model):
 
     password = db.Column (db.String, nullable = False)
 
-    user_city = db.Column (db.String, db.ForeignKey("cities.city_name"),
-                            nullable = False)
 
-    # city_id = db.Column(db.Integer,
-    #                     db.ForeignKey("cities.city_id"))
+
+    city_id = db.Column(db.Integer,
+                        db.ForeignKey("cities.city_id"))
 
 
     city = db.relationship('City', backref='user')
@@ -69,7 +68,7 @@ class Category(db.Model):
                     primary_key = True,
                     nullable = False)
     
-    category_name = db.Column(db.String)
+    category_name = db.Column(db.String, unique = True)
 
     # listing = db.relationship("Listing", backref = "category")
 
@@ -80,31 +79,36 @@ class Category(db.Model):
 class Listing(db.Model):
 
     __tablename__ = "listings"
-
+# user, listing_name, serves, category,  
+#                     description, listing_address, city, time_from, time_to):
     listing_id = db.Column (db.Integer, 
                     autoincrement = True, 
                     primary_key = True,
                     nullable = False)
 
-    user_id = db.Column (db.Integer, 
-                        db.ForeignKey("users.user_id"))
+    """ Foreign keys : user_id, city_id, category_id """
+    user_id = db.Column(db.Integer, 
+                            db.ForeignKey("users.user_id"))
+
+    city_id = db.Column(db.Integer,
+                        db.ForeignKey("cities.city_id"))
+
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey("categories.category_id"))
+
+    """ No more foreign keys """
 
     listing_name = db.Column(db.String,
                       nullable= False)
 
     serves = db.Column(db.Integer,)
 
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey("categories.category_id"))
-
-    # listing_category = db.Column(db.String)
 
     description = db.Column (db.Text)
 
     listing_address =  db.Column(db.String, nullable = False)
 
-    city_id = db.Column(db.Integer,
-                        db.ForeignKey("cities.city_id"))
+    
 
     time_from = db.Column(db.String, nullable = False)
 

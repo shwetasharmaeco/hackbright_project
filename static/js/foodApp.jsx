@@ -12,26 +12,25 @@ const Redirect = window.ReactRouterDOM.Redirect;
 class App extends React.Component{
     render(){
         return(
-            <div>
+        <div>
             <Router>
                 <div className = "App">
-                <Switch>
-                    <Route path="/"  component={nav}/>
-                </Switch>
-                    <Route path="/signup" component={signup}/>
-                    <Route path="/login" component={login}/>
-                    
+                    <Route exact strict path="/"   component={nav}/>
+                    <Route exact strict path="/signup" component={signup}/>
+                    <Route exact strict path="/login" component={login}/>  
+                    <Route exact strict path="/listings" component={listing}/> 
+                    <Route exact strict path="/new-listing" component={newListing}/>
                 </div>
             </Router>
-            </div>  
+        </div>  
         
         );
     }
 }
 
-const nav = () =>(
-
-    
+class nav extends React.Component {
+    render(){
+    return(
         <div>
             <ul className="homepage-links">
             <Link to="/login">
@@ -44,12 +43,23 @@ const nav = () =>(
                     signup
                 </li>
             </Link>
+            <Link to="/listings">
+                <li>
+                    listings
+                </li>
+            </Link>
+            <Link to="/new-listing">
+                <li>
+                    Upload a listing
+                </li>
+            </Link>
             </ul>
 
         </div>
     );
+    }
 
-
+}
 
 
 class login extends React.Component{
@@ -93,7 +103,8 @@ handlesubmit(evt){
     })
     .then(data => { 
         document.getElementById("response").innerHTML = data
-        console.log(data)})    
+        console.log(data)});
+
 }
 
  
@@ -114,6 +125,11 @@ handlesubmit(evt){
                     <input type= "text" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
                     <button type="submit" form="login" value="Submit" onClick={this.handlesubmit}>Submit</button>
                     </form>
+                    <br></br>
+                    <br></br>
+                    <Link to="/">
+                    <button type="submit" value= "in">Go Back</button>
+                    </Link>
                 <br></br>
                 <br></br>
                 
@@ -198,7 +214,7 @@ render(){
     return (
     <div>  
         
-        <h1>"Create an Account"</h1>
+        <h1>Create an Account</h1>
         <p id="response"></p>
         
        <form id= "sign-up">
@@ -230,15 +246,233 @@ render(){
 
              <label>Password</label>
              <input type="text" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
+             <br></br>
+             <br></br>
+             <button type="submit" form="signup" value="Submit" onClick={this.handlesubmit}>Submit</button>
          </form>
             <br></br>
             <br></br>
-         <button type="submit" form="signup" value="Submit" onClick={this.handlesubmit}>Submit</button>
+            <Link to="/">
+            <button type="submit" value= "in">Go Back</button>
+            </Link>
        </div>
        );
 }
 }
 
+class newListing extends React.Component{
+    constructor(){
+        super();
+        this.state = {lister_email : "",
+                    listing_name : "",
+                    serves:"",
+                    category:"",
+                    description:"",
+                    listing_address: "",
+                    city:"",
+                    time_from:"",
+                    time_to:""};
+    
+    this.handlename= this.handlename.bind(this);
+    this.handleserves= this.handleserves.bind(this);
+    this.handlecategory = this.handlecategory.bind(this);
+    this.handleaddress = this.handleaddress.bind(this);
+    this.handlecity= this.handlecity.bind(this);
+    this.handleemail= this.handleemail.bind(this);
+    this.handledescription = this.handledescription.bind(this);
+    this.handletimefrom = this.handletimefrom.bind(this);
+    this.handletimeto = this.handletimeto.bind(this);
+    this.handlesubmit = this.handlesubmit.bind(this);
+    }
+    handlename(evt){
+        this.setState({listing_name:evt.target.value});
+    }
+    
+    handleserves(evt){
+            this.setState({serves:evt.target.value});
+    }
+    
+    handleaddress(evt){
+            this.setState({listing_address:evt.target.value});
+    }
+    handlecity(evt){
+        this.setState({city:evt.target.value});
+    }
+    handleemail(evt){
+        this.setState({lister_email:evt.target.value});
+    }
+    handlecategory(evt){
+        this.setState({category:evt.target.value});
+    }
+    handledescription(evt){
+        this.setState({description:evt.target.value});
+    }
+    handletimefrom(evt){
+        this.setState({time_from:evt.target.value});
+    }
+    handletimeto(evt){
+        this.setState({time_to:evt.target.value});
+    }
+    handlesubmit(evt){
+        evt.preventDefault();
+        
+        console.log(this.state);
+     
+        
+         fetch('/new-listing', 
+          {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({lister_email : this.state.lister_email,
+            listing_name : this.state.listing_name,
+            serves:this.state.serves,
+            category:this.state.category,
+            description:this.state.description,
+            listing_address:this.state.listing_address,
+            city:this.state.city,
+            time_from:this.state.time_from,
+            time_to:this.state.time_to
+            
+        })
+
+
+
+        }
+            )
+    
+        .then(function(res){
+            return res.json()
+               
+        })
+        .then(data => { 
+            document.getElementById("response").innerHTML = data
+            console.log(data)})    
+    }
+
+    render(){
+        return (
+        <div>  
+            
+            <h1>Upload a Listing</h1>
+            <p id="response"></p>
+            
+           <form id= "new-listing">
+    
+                 <label>Email</label>
+                 <input type= "text" name="email" value= {this.state.lister_email} onChange={this.handleemail}></input>
+                 <br></br>
+                 <br></br>
+
+    
+                 <label>Listing Name</label>
+                 <input type="text" name="listing_name" value= {this.state.listing_name} onChange={this.handlename}></input>
+                 <br></br>
+                 <br></br>
+
+                 <label>Serves</label>
+                 <input type= "text" name="serves" value= {this.state.serves} onChange={this.handleserves}></input>
+                 <br></br>
+                 <br></br>
+    
+                 <label>Address</label>
+                 <input type="text" name="address" value= {this.state.listing_address} onChange={this.handleaddress}></input>
+                 <br></br>
+                 <br></br>
+    
+                 <label>City</label>
+                 <input type="text" name="city" value= {this.state.city} onChange={this.handlecity}></input>
+                 <br></br>
+                 <br></br>
+    
+                 <label>Listing description</label>
+                 <input type="text" name="description" value= {this.state.description} onChange={this.handledescription}></input>
+                 <br></br>
+                 <br></br>
+    
+                 <label>Listing Category</label>
+                 <input type="text" name="category" value= {this.state.category} onChange={this.handlecategory}></input>
+                 <br></br>
+                 <br></br>
+
+                 <label>Available From</label>
+                 <input type="text" name="time_from" value= {this.state.time_from} onChange={this.handletimefrom}></input>
+                 <br></br>
+                 <br></br>
+
+                 <label>Available till</label>
+                 <input type="text" name="time_to" value= {this.state.time_to} onChange={this.handletimeto}></input>
+                 <br></br>
+                 <br></br>
+                 <button type="submit" form="newlisting" value="Submit" onClick={this.handlesubmit}>Submit</button>
+             </form>
+                <br></br>
+                <br></br>
+                <Link to="/">
+                <button type="submit" value= "in">Go Back</button>
+                </Link>
+           </div>
+           );
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+class listing extends React.Component{
+    constructor(){
+        super();
+        this.state = {listings: []};
+    }
+
+  componentDidMount(){
+    
+        fetch('/all-listings')
+        .then(function(res){
+            // console.log(res.json())
+            return res.json()
+        })
+
+        .then(data => { 
+            this.setState({listings:data})
+            // document.getElementById("response").innerHTML = data[0]["description"]
+            console.log(data)})    
+        
+    }
+
+    render(){
+        return (
+        <div>    
+        {this.state.listings.map((listing) => (
+           
+                <div key = {listing.name} className="listing">
+                    <br></br>
+                    <br></br>
+                    user : {listing.user}<br></br>
+                    listing: {listing.name}<br></br>
+                    category : {listing.category}<br></br>
+                    description : {listing.description}<br></br>
+                    address: {listing.address}, {listing.city}<br></br>
+                    pickup time : {listing.time_from} - {listing.time_to}
+                </div>
+        )
+        )}
+        </div>
+        )
+        }
+    }
+    
 
 ReactDOM.render(
     <App/>,

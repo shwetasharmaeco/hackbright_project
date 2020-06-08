@@ -13,14 +13,16 @@ def create_city(city_name, zipcode):
 
     return city
 
-def create_user(name, phone, street_address, email,password, user_city):
+def create_user(name, phone, street_address, email,password, city_id):
     """ create  and return user if doesn't already exists in database """
+
+    
 
     user =  User (name = name, phone = phone, 
                 street_address=street_address, 
                 email = email, 
                 password = password, 
-                user_city = user_city)
+                city_id = city_id)
 
     db.session.add(user)
     db.session.commit()
@@ -29,17 +31,17 @@ def create_user(name, phone, street_address, email,password, user_city):
 
 
 
-def create_listing(user, listing_name, serves, category,  
-                    description, listing_address, city, time_from, time_to):
+def create_listing(user_id, listing_name, serves, category_id,  
+                    description, listing_address, city_id, time_from, time_to):
     """ create and return listing """
 
-    listing = Listing(user=user,
+    listing = Listing(user_id= user_id,
                     listing_name = listing_name, 
                     serves = serves, 
-                    category = category, 
+                    category_id = category_id, 
                     description = description, 
                     listing_address = listing_address, 
-                    city = city,
+                    city_id = city_id,
                     time_from = time_from, 
                     time_to= time_to)
 
@@ -76,6 +78,12 @@ def get_user_by_id(user_id):
 def get_user_by_email(email):
     return User.query.filter(User.email == email).first()
 
+def get_category_by_id(category_id):
+    return Category.query.get(category_id)
+
+def get_category_by_name(categoryName):
+    return Category.query.filter(Category.category_name == categoryName).first()
+
 def all_listings():
     return Listing.query.all()
 
@@ -84,6 +92,14 @@ def get_listing_by_id(listing_id):
 
 def all_cities():
     return City.query.all()
+
+def get_city_by_name(city_name):
+    return City.query.filter(City.city_name == city_name).first()
+
+def get_city_by_id(city_id):
+    return City.query.get(city_id)
+
+
 
 
 cities_list=[]

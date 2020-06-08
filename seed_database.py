@@ -29,11 +29,11 @@ for n in range(10):
     name = fake.name()
     email = fake.email()
     city = choice(cities_list)
-    user_city = city.city_name
+    city_id = city.city_id
     street_address =  fake.address()
     phone = fake.phone_number()
     password = fake.word()
-    user = crud.create_user(name, phone, street_address,email, password, user_city)
+    user = crud.create_user(name, phone, street_address,email, password, city_id)
     users_list.append(user)
 
 
@@ -52,20 +52,23 @@ for n in range (15):
 listings_list = []
 for n in range(15):
     user = choice(users_list)
+    user_id = user.user_id
     listing_name = fake.word()
     serves = randint(0,10)
     category = choice(categories_list)
+    category_id = category.category_id
     description = fake.sentence()
     listing_address = fake.address()
     city = choice(cities_list)
+    city_id = city.city_id
     time_from= fake.time()
     time_to = fake.time()
     # time_from= fake.date_time_this_month(before_now=False, after_now =False)
     # time_to = fake.date_time_this_month(before_now=False, after_now =False)
 
 
-    listing = crud.create_listing(user,listing_name, serves, category, 
-                    description, listing_address, city, time_from, time_to)
+    listing = crud.create_listing(user_id,listing_name, serves, category_id, 
+                    description, listing_address, city_id, time_from, time_to)
     listings_list.append(listing)
 
 
