@@ -15,11 +15,12 @@ class App extends React.Component{
         <div>
             <Router>
                 <div className = "App">
-                    <Route exact strict path="/"   component={nav}/>
-                    <Route exact strict path="/signup" component={signup}/>
-                    <Route exact strict path="/login" component={login}/>  
-                    <Route exact strict path="/listings" component={listing}/> 
-                    <Route exact strict path="/new-listing" component={newListing}/>
+                    <Route exact strict path="/"   component={Nav}/>
+                    <Route exact strict path="/signup" component={Signup}/>
+                    <Route exact strict path="/login" component={Login}/>  
+                    <Route exact strict path="/listings" component={Listing}/> 
+                    <Route exact strict path="/new-listing" component={NewListing}/>
+                    <Route exact strict path = "/logged-out" component = {Logout}/>
                 </div>
             </Router>
         </div>  
@@ -28,11 +29,14 @@ class App extends React.Component{
     }
 }
 
-class nav extends React.Component {
+class Nav extends React.Component {
+    
     render(){
+        
     return(
         <div>
             <ul className="homepage-links">
+            
             <Link to="/login">
                 <li>
                     signin
@@ -43,30 +47,31 @@ class nav extends React.Component {
                     signup
                 </li>
             </Link>
-            <Link to="/listings">
-                <li>
-                    listings
-                </li>
-            </Link>
-            <Link to="/new-listing">
-                <li>
-                    Upload a listing
-                </li>
-            </Link>
+            
+        
             </ul>
 
         </div>
     );
-    }
+        }
+    
+
 
 }
 
 
-class login extends React.Component{
+class Login extends React.Component{
     constructor(){
         super();
+        const token = localStorage.getItem("token")
+
+        let loggedIn = true
+        if(token == null){
+            loggedIn = false
+        }
         this.state = {email : "",
-                    password : ""};
+                    password : "",
+                    loggedIn};
     
     this.handleemail= this.handleemail.bind(this);
     this.handlepassword= this.handlepassword.bind(this);
@@ -103,13 +108,25 @@ handlesubmit(evt){
     })
     .then(data => { 
         document.getElementById("response").innerHTML = data
-        console.log(data)});
+        console.log(data)
+        if (data === 'Logged in'){
+            localStorage.setItem("token", "shweta")
+            this.setState({loggedIn:true})
+            console.log({token})
+        }
+    
+    
+    });
 
 }
 
  
     
     render(){
+        const loggedIn = this.state.loggedIn
+        if (loggedIn){
+            return(<Redirect to="/listings"/>)
+        }
         
     return(
         
@@ -122,7 +139,7 @@ handlesubmit(evt){
                     <br></br>
                     <br></br>
                     <label>Password</label>
-                    <input type= "text" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
+                    <input type= "text" placeholder = "password" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
                     <button type="submit" form="login" value="Submit" onClick={this.handlesubmit}>Submit</button>
                     </form>
                     <br></br>
@@ -139,7 +156,7 @@ handlesubmit(evt){
     
 }
 
-class signup extends React.Component{
+class Signup extends React.Component{
     constructor(){
         super();
         this.state = {name : "",
@@ -148,7 +165,9 @@ class signup extends React.Component{
                     city:"",
                     email:"",
                     password : "",
+                    signedUp: false
                     };
+    
     
     this.handlename= this.handlename.bind(this);
     this.handlenumber= this.handlenumber.bind(this);
@@ -158,6 +177,8 @@ class signup extends React.Component{
     this.handlepassword = this.handlepassword.bind(this);
     this.handlesubmit = this.handlesubmit.bind(this);
 }
+
+
 
 handlename(evt){
     this.setState({name:evt.target.value});
@@ -181,6 +202,8 @@ handlepassword(evt){
 }
 handlesubmit(evt){
     evt.preventDefault();
+    
+
     
     console.log(this.state);
  
@@ -207,10 +230,22 @@ handlesubmit(evt){
     })
     .then(data => { 
         document.getElementById("response").innerHTML = data
-        console.log(data)})    
+        console.log(data)
+        if (data === 'Account created! Please log in'){
+            this.setState({signedUp: true})
+    } ;
+
+
+    } 
+    )      
 }
 
 render(){
+    const signedUp = this.state.signedUp
+    if (signedUp){
+        return (<Redirect to ="/login"/>)
+    }
+    else{
     return (
     <div>  
         
@@ -257,10 +292,11 @@ render(){
             </Link>
        </div>
        );
+    }
 }
 }
 
-class newListing extends React.Component{
+class NewListing extends React.Component{
     constructor(){
         super();
         this.state = {lister_email : "",
@@ -358,6 +394,10 @@ class newListing extends React.Component{
             
             <h1>Upload a Listing</h1>
             <p id="response"></p>
+
+            <Link to="/listings">
+                <button type="submit" value= "Logout">All listings</button>
+                </Link>
             
            <form id= "new-listing">
     
@@ -411,7 +451,7 @@ class newListing extends React.Component{
                 <br></br>
                 <br></br>
                 <Link to="/">
-                <button type="submit" value= "in">Go Back</button>
+                <button type="submit" value= "to-home">Go Back</button>
                 </Link>
            </div>
            );
@@ -430,10 +470,22 @@ class newListing extends React.Component{
 
 
 
-class listing extends React.Component{
+class Listing extends React.Component{
     constructor(){
         super();
+        
+        const token = localStorage.getItem("token")
+
+        let loggedIn = true
+        if(token == null){
+            loggedIn = false
+        }
+        this.state = {
+            loggedIn
+        }
         this.state = {listings: []};
+
+        
     }
 
   componentDidMount(){
@@ -452,11 +504,22 @@ class listing extends React.Component{
     }
 
     render(){
+        if (this.state.loggedIn === false){
+            return (<Redirect to ="/login"/>)
+        }
+        else{
         return (
         <div>    
+                <Link to="/new-listing">
+                <button type="submit" value= "new-listing">Upload new Listing</button>
+                </Link>
+                <Link to="/">
+                <button type="submit" value= "Logout">Log Out</button>
+                </Link>
         {this.state.listings.map((listing) => (
            
                 <div key = {listing.name} className="listing">
+                
                     <br></br>
                     <br></br>
                     user : {listing.user}<br></br>
@@ -470,6 +533,17 @@ class listing extends React.Component{
         )}
         </div>
         )
+        }
+    }
+    }
+    
+ class Logout extends React.Component {
+        render() {
+            return (
+                <div>
+                    Logging Out!
+                </div>
+            )
         }
     }
     

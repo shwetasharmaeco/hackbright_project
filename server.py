@@ -24,8 +24,6 @@ def all_cities():
 @app.route('/all-listings')
 def all_listings():
     main_list=[]
-    
-    print("****** I was here")
     listings = crud.all_listings()
    
     for listing in listings:
@@ -45,8 +43,6 @@ def all_listings():
         main_list.append(dict_)
     return json.dumps(main_list)
 
-# (user, listing_name, serves, category,  
-#                     description, listing_address, city, time_from, time_to)
 
 @app.route('/sign-up', methods=['POST',"GET"])
 def handle_sign_up():
@@ -55,7 +51,6 @@ def handle_sign_up():
     data = request.get_json()
     user = crud.get_user_by_email(data["email"])
     city = crud.get_city_by_name(data["city"])
-    print("!!!!!!!!",city)
     
 
     if user:
@@ -66,7 +61,7 @@ def handle_sign_up():
         else:
             
             crud.create_user(data["name"], data["number"], data["address"], data["email"],data["password"], city.city_id)
-            return jsonify( f'Account created! Please log in {data["name"]}')
+            return jsonify('Account created! Please log in')
 
 
 @app.route('/new-listing', methods=["POST"])
@@ -76,12 +71,12 @@ def new_listing():
     user = crud.get_user_by_email(data["lister_email"])
     category = crud.get_category_by_name(data["category"])
     city = crud.get_city_by_name(data["city"])
-    print("**** I was here")
+
   
     if user:
         
         print("********trying to create a listing")
-        # crud.create_listing(user.user_id, "hchciuc",2, category.category_id , "dbjhdue", "jbdhhj","dge", "dbjdek", "dnbjj")
+    
         crud.create_listing(user.user_id, data["listing_name"], data["serves"], 
                            category.category_id, data["description"], data["listing_address"],
                             city.city_id, data["time_from"], data["time_to"])
@@ -104,7 +99,7 @@ def handle_sign_in():
         
         if user.password == data["password"] and user.email == data["email"]:
             session["user_id"] = user.user_id
-            return jsonify(f'Logged in as {user.name}')
+            return jsonify('Logged in')
         else:
             return jsonify('Wrong email or password!')
     else:

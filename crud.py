@@ -99,15 +99,6 @@ def get_city_by_name(city_name):
 def get_city_by_id(city_id):
     return City.query.get(city_id)
 
-
-
-
-cities_list=[]
-def use():
-    for city in all_cities():
-        cities_list.append(city.city_name)
-    return cities_list
-
 def all_orders():
     return Order.query.all()
 
