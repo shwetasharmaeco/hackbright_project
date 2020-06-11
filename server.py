@@ -15,16 +15,34 @@ def homepage():
     
     return render_template ('index.html')
 
-@app.route('/api/cities')
+
+@app.route("/categories")
+def all_categories():
+    categories_=[]
+    categories = crud.all_categories()
+    for category in categories:
+        g_dict={}
+        g_dict["category_name"] = category.category_name
+        categories_.append(g_dict)
+    return json.dumps(categories_)
+
+@app.route('/cities')
 def all_cities():
+    cities_=[]
     cities = crud.all_cities()
+    for city in cities:
+        c_dict={}
+        c_dict["zipcode"]=city.zipcode
+        c_dict["city_name"]=city.city_name
+        cities_.append(c_dict)
     
-    return jsonify(cities)
+    return json.dumps(cities_)
 
 @app.route('/all-listings')
 def all_listings():
     main_list=[]
     listings = crud.all_listings()
+    data = request.get_json()
    
     for listing in listings:
         dict_ = {}
@@ -32,6 +50,7 @@ def all_listings():
         city = crud.get_city_by_id(listing.city_id)
         category = crud.get_category_by_id(listing.category_id)
         dict_["user"] = user.name
+        dict_["listing_id"] = listing.listing_id
         dict_["name"] = listing.listing_name
         dict_["description"] = listing.description
         dict_["serves"]=listing.serves
@@ -62,6 +81,33 @@ def handle_sign_up():
             
             crud.create_user(data["name"], data["number"], data["address"], data["email"],data["password"], city.city_id)
             return jsonify('Account created! Please log in')
+
+
+
+@app.route("/update-listing", methods=['POST',"GET"])
+def update_listing():
+    data_ = request.get_json()
+    print(data_)
+ 
+    listing = crud.get_listing_by_id(data_["listing_id"])
+    print("*******",listing.serves)
+    # while True:
+    if listing:
+    
+        if listing.serves > int(data_["qty"]):
+            serves = listing.serves - int(data_["qty"])
+            crud.update_serves_for_listing_by_id(listing.listing_id,serves)
+            listing = crud.get_listing_by_id(data_["listing_id"])
+            print("*******",listing.serves)
+            return jsonify("Order Placed")
+        else:
+            return jsonify("Sorry! We do not have enough food")
+
+    else:
+        return ("no listing found")
+        
+  
+        
 
 
 @app.route('/new-listing', methods=["POST"])
@@ -98,13 +144,23 @@ def handle_sign_in():
     if user:
         
         if user.password == data["password"] and user.email == data["email"]:
-            session["user_id"] = user.user_id
-            return jsonify('Logged in')
+            # session["user_id"] = user.user_id
+            return jsonify({"user_id": user.user_id})
         else:
-            return jsonify('Wrong email or password!')
+            return jsonify({"error": "Wrong email or password"})
     else:
         
-        return jsonify("email doesn't exist")
+        return jsonify({"error": "email doesn't exist"})
+
+
+@app.route('/place-order', methods=["POST","GET"] )
+def place_order():
+    print("*****I was here")
+    data = request.get_json()
+    # user = crud.get_user_by_email()
+    # (user_id, order_qty, listing_id, confirmed_at)
+    return jsonify("bccjcdcbjc")
+
    
   
 

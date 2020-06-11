@@ -120,7 +120,7 @@ class Listing(db.Model):
 
     
     def __repr__(self):
-        return f'<Listing listing_id={self.user_id} name={self.listing_name}>'
+        return f'<Listing listing_id={self.listing_id} name={self.listing_name}>'
 
 
 class Order(db.Model):

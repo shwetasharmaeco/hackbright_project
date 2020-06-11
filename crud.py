@@ -50,6 +50,8 @@ def create_listing(user_id, listing_name, serves, category_id,
 
     return listing
 
+
+
 def create_category(category_name):
 
     category = Category(category_name = category_name)
@@ -59,9 +61,9 @@ def create_category(category_name):
 
     return category
 
-def create_order(user, order_qty, listing, confirmed_at):
+def create_order(user_id, order_qty, listing_id, confirmed_at):
 
-    order = Order(user=user, order_qty = order_qty,listing = listing, confirmed_at = confirmed_at)
+    order = Order(user_id=user_id, order_qty = order_qty,listing_id = listing_id, confirmed_at = confirmed_at)
 
     db.session.add(order)
     db.session.commit()
@@ -85,10 +87,22 @@ def get_category_by_name(categoryName):
     return Category.query.filter(Category.category_name == categoryName).first()
 
 def all_listings():
-    return Listing.query.all()
+    return Listing.query.order_by(Listing.listing_id).all()
 
 def get_listing_by_id(listing_id):
     return Listing.query.get(listing_id)
+
+
+def update_serves_for_listing_by_id(listing_id,serves):
+    Listing.query.filter(Listing.listing_id == listing_id).update({Listing.serves: serves}, synchronize_session="fetch") 
+    
+    db.session.commit() 
+    
+ 
+  
+
+def commit():
+    db.session.commit()
 
 def all_cities():
     return City.query.all()
