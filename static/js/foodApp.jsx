@@ -17,12 +17,11 @@ class App extends React.Component{
                 <div className = "App">
                     <Route exact strict path="/"   component={Login}/>
                     <Route exact strict path="/signup" component={Signup}/>
-                    {/* <Route exact strict path="/login" component={Login}/>   */}
                     <Route exact strict path="/listings" component={Listing}/> 
                     <Route exact strict path="/new-listing" component={NewListing}/>
                     <Route exact strict path = "/logout" component = {Logout}/>
                     <Route exact strict path = "/order" component = {Order}/>
-                    
+                    <Route exact strict path = "/your-listings" component={YourListing}/>  
                 </div>
             </Router>
         </div>  
@@ -30,35 +29,6 @@ class App extends React.Component{
         );
     }
 }
-
-// class Nav extends React.Component {
-    
-//     render(){   
-//     return(
-//         <div>
-//             <ul className="homepage-links">
-            
-//             <Link to="/login">
-//                 <li>
-//                     Log In
-//                 </li>
-//             </Link>
-//             <Link to="/signup">
-//                 <li>
-//                     Sign Up
-//                 </li>
-//             </Link>
-            
-        
-//             </ul>
-
-//         </div>
-//     );
-//         }
-    
-
-
-// }
 
 
 class Login extends React.Component{
@@ -146,24 +116,19 @@ handlesubmit(evt){
                 <h1>Login Page</h1>
                 <p id="response"> </p>
                     <form id = "sign-in">
-                    {/* <label>Email</label> */}
-                    <input type= "text" placeholder = "Email" name="email" value= {this.state.email} onChange={this.handleemail}></input>
-                    <br></br>
-                    <br></br>
-                    {/* <label>Password</label> */}
-                    <input type= "text" placeholder = "password" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
-                    <button type="submit" form="login" value="Submit" onClick={this.handlesubmit}>Submit</button>
+                        <input type= "text" placeholder = "Email" name="email" value= {this.state.email} onChange={this.handleemail}></input>
+                        <br></br>
+                        <br></br>
+                        <input type= "text" placeholder = "password" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
+                        <button type="submit" form="login" value="Submit" onClick={this.handlesubmit}>Submit</button>
                     </form>
                     <br></br>
                     <br></br>
                     <Link to="/signup">
-                    {/* <button type="submit" value= "in">Go Back</button> */}
-                    <button type="submit" value= "in">Create Account</button>
-
+                        <button type="submit" value= "in">Create Account</button>
                     </Link>
                 <br></br>
-                <br></br>
-                
+                <br></br>       
         </div>
         );
     }
@@ -228,14 +193,8 @@ componentDidMount(){
         this.setState({cities:data_,})
         console.log(data_)
         console.log(this.state)
-    }) 
-   
-    
+    })     
 }
-
-
-
-
 
 
 handlesubmit(evt){
@@ -313,7 +272,7 @@ render(){
              <select className="city" onClick={this.handlecity}>
                     {cities.map(c =>(
                     <option key={c["city_name"]} value={c["city_name"]}>{c["city_name"]}</option>))}
-                </select>
+            </select>
 
             <br></br>
             <br></br> 
@@ -321,7 +280,7 @@ render(){
              <label>Email</label>
              <input type="text" name="email" value= {this.state.email} onChange={this.handleemail}></input>
              <br></br>
-            <br></br>
+             <br></br>
 
              <label>Password</label>
              <input type="text" name="password" value= {this.state.password} onChange={this.handlepassword}></input>
@@ -339,6 +298,8 @@ render(){
     }
 }
 }
+
+
 
 class NewListing extends React.Component{
     constructor(){
@@ -457,8 +418,8 @@ class NewListing extends React.Component{
             <h1>Upload a Listing</h1>
             <p id="response"></p>
 
-            <Link to="/listings">
-                <button type="submit" value= "Logout">Go back to Browsing</button>
+                <Link to="/listings">
+                    <button type="submit" value= "Logout">Go back to Browsing</button>
                 </Link>
             <br></br>
             <br></br>
@@ -499,7 +460,7 @@ class NewListing extends React.Component{
                  <select className="category" onClick={this.handlecategory}>
                     {categories.map(c =>(
                     <option key={c["category_name"]} value={c["category_name"]}>{c["category_name"]}</option>))}
-                </select>
+                 </select>
                  {/* <input type="text" name="category" value= {this.state.category} onChange={this.handlecategory}></input>*/}
                  <br></br>
                  <br></br> 
@@ -517,23 +478,10 @@ class NewListing extends React.Component{
              </form>
                 <br></br>
                 <br></br>
-                {/* <Link to="/">
-                <button type="submit" value= "to-home">Go Back</button>
-                </Link> */}
            </div>
            );
     }
-
-
-
 }
-
-
-
-
-
-
-
 
 
 
@@ -554,63 +502,17 @@ class Listing extends React.Component{
                     qty:1
                     }
                    
-        // this.handleorder= this.handleorder.bind(this);
-        this.handleqty=this.handleqty.bind(this);
-        // this.handleseeorders=this.handleseeorders.bind(this);
-        // this.handlepickup = this.handlepickup.bind(this,index);
-    
-
-        
+        this.handleqty=this.handleqty.bind(this);  
     }
+
+
     handleqty(e){
         this.setState({qty:e.target.value},  
             );
     }
-
-
-
-    // handleseeorders(e){
-    //     e.preventDefault(); 
-        
-    //     fetch('/your-orders',
-    //     {
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body:JSON.stringify({user_id:localStorage.getItem("user_id")
-            
-    //     })
-    //     } 
-    //     )
-
-    //     .then(function(res){
-    //         return res.json()
-    //     })
-        
-
-    //     .then(dataO => { 
-            
-
-    //         console.log(dataO) 
-    //         localStorage.setItem("orders", dataO) ;
-    //         let display = ""
-            
-    //         for (const object of dataO){
-    //             let use = "<pre>" + "Listing:" + object["listing_name"] + "\n"+ "Address:" + object["listing_address"] + "\n"+ "Pickup between:" + object["listing_time_from"] + "-"+ object["listing_time_to"]  + "\n\n" + "</pre>"  
-    //             display += use
-    //             console.log(display)
-
-    //             document.getElementById("response").innerHTML = display}
-    //       }
-    //       ) 
-
-
-    // }
    
 
-  componentDidMount(){
+    componentDidMount(){
     
         fetch('/all-listings')
         .then(function(res){
@@ -628,17 +530,12 @@ class Listing extends React.Component{
 
        
         if (this.state.qty > listing.serves){
-            // document.getElementById("response").innerHTML = localStorage.getItem("user_id")
             document.getElementById("response").innerHTML = "Not enough food"
             return
         }
-        // <Redirect to="/order"/>
-
+        
         listing.serves = listing.serves - this.state.qty
         this.setState({serves:listing.serves})
-        
-
-        
         
         fetch('/update-listing', 
         {
@@ -649,51 +546,47 @@ class Listing extends React.Component{
           },
           body:JSON.stringify({listing_id:listing.listing_id,
             qty:this.state.qty
-      })
+            })
         
-    })
-    .then(function(res){
-        return res.json()
-    })
+        })
+        .then(function(res){
+            return res.json()
+         })
 
-    .then(data_ => { 
+        .then(data_ => { 
         if (data_ === "Order Placed"){
             localStorage.setItem("listing_id", listing["listing_id"])
             document.getElementById("response").innerHTML = data_
 
-
-
-         fetch('/place-order', 
-         {
-           method: 'POST',
-           headers: {
-               'Accept': 'application/json',
-               'Content-Type': 'application/json'
-           },
-           body:JSON.stringify({user_id: localStorage.getItem("user_id"),
-           order_qty:this.state.qty,
-           listing_id: localStorage.getItem("listing_id")
-       })
-
-       }
-           )
+            fetch('/place-order', 
+                {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({user_id: localStorage.getItem("user_id"),
+                order_qty:this.state.qty,
+                listing_id: localStorage.getItem("listing_id")
+                })
+            }
+            )
    
-       .then(function(res){
-           return res.json()
-              
-       })
-       .then(data => { 
+            .then(function(res){
+                return res.json()      
+            })
+            .then(data => { 
            localStorage.removeItem("listing_id")
-        //    document.getElementById("response").innerHTML = data
            console.log(data)}) 
             return
-        }
+            }
+
         console.log(listing)
         console.log(data_)
         console.log(this.state)
         document.getElementById("response").innerHTML = data_
        
-    } ) 
+    }) 
     }
 
 
@@ -703,7 +596,6 @@ class Listing extends React.Component{
             return (<Redirect to ="/"/>)
         }
         else{
-            // console.log(this.state.listings)
         return (
         <div>    
                 <Link to="/new-listing">
@@ -712,18 +604,18 @@ class Listing extends React.Component{
                 
                 <label>For</label>
                 <select onChange={this.handleqty}>
-                    <option key ="1" value="1" >1</option>
-                    <option key ="2" value="2" >2</option>
-                    <option key ="3" value="3" >3</option>
-                    <option key ="4" value="4" >4</option>
+                    <option key ="1" value="1">1</option>
+                    <option key ="2" value="2">2</option>
+                    <option key ="3" value="3">3</option>
+                    <option key ="4" value="4">4</option>
                 </select>
                 
                 <Link to="/order">
-                <button type="submit" value = "see-orders">See Orders</button>
+                <button type="submit" value = "see-orders">Your Orders</button>
                 </Link>
-                {/* <Link to="/order">
-                <button type="submit" value = "see-listings">See Listings</button>
-                </Link> */}
+                <Link to="/your-listings">
+                <button type="submit" value = "see-listings">Your Listings</button>
+                </Link>
                 
 
                 <Link to="/logout">
@@ -821,31 +713,102 @@ class Listing extends React.Component{
             
             return(<div>
                 <h1>Hi! this is order page</h1>
+                <Link to="/listings">
+                    <button type="submit" value="to-listings">Go back to listings</button>
+                </Link>
                 {this.state.orders.map((order) => (
            
-           <div key = {order.listing_name} className="listing">
-               <ul>
-               <li key= {order.listing_name}>
-               <br></br>
-               <br></br>
-               
-               listing: {order.listing_name}<br></br>
-               address: {order.listing_address}<br></br>
-               pickup time : {order.listing_time_from} - {order.listing_time_to}
-               </li>
-               </ul>
-               
-           </div>
+                        <div key = {order.listing_name} className="listing">
+                            <ul>
+                                <li key= {order.listing_name}>
+                                <br></br>
+                                <br></br>
+                                listing: {order.listing_name}<br></br>
+                                address: {order.listing_address}<br></br>
+                                pickup time : {order.listing_time_from} - {order.listing_time_to}
+                                </li>
+                            </ul>
+                        </div>
    )
    )}
-               <Link to="/listings">
-
-               <button type="submit" value="to-listings">Go back to listings</button>
-                </Link>
+              
 
                 </div>)
         }
     }
+
+
+
+
+    class YourListing extends React.Component{
+        constructor(props){
+            super(props);
+            this.state=({your_listing:[]})
+        }
+
+
+
+        componentDidMount (){
+        
+            fetch('/your-listings',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({user_id:localStorage.getItem("user_id")
+                
+            })
+            } 
+            )
+    
+            .then(function(res){
+                return res.json()
+            })
+            .then(data => { 
+                this.setState({your_listing:data,})
+                console.log(data)
+                console.log(this.state)
+            }) 
+    
+        }
+       
+        render(){
+            
+            return(<div>
+                        <h1>Hi! this is Your listings page</h1>
+                        <Link to="/listings">
+                            <button type="submit" value="to-listings">Go back to listings</button>
+                        </Link>
+                        {this.state.your_listing.map((listing) => (
+            
+                            <div key = {listing.listing_id} className="listing">
+                                <ul>
+                                    <li key= {listing.listing_id}>
+                                    <br></br>
+                                    <br></br>
+                                        listing_id : {listing.listing_id}<br></br>
+                                        listing: {listing.name}<br></br>
+                                        category : {listing.category}<br></br>
+                                        description : {listing.description}<br></br>
+                                        serves:{listing.serves}<br></br>
+                                        address: {listing.address}, {listing.city}<br></br>
+                                        pickup time : {listing.time_from} - {listing.time_to}
+                                    </li>
+                                </ul>
+               
+                            </div>
+                        )            
+                        )}
+                </div>)
+                }   
+
+    }
+
+
+
+
 
 ReactDOM.render(
     <App/>,

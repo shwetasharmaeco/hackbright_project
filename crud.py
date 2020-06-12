@@ -102,6 +102,11 @@ def update_serves_for_listing_by_id(listing_id,serves):
 def group_orders_by_id(user_id):
     return db.session.query(Order.listing_id).group_by(Order.user_id, Order.listing_id).having(Order.user_id == user_id).all()
 
+
+def group_listings_by_id(user_id):
+    return db.session.query(Listing.listing_id).group_by(Listing.user_id, Listing.listing_id).having(Listing.user_id == user_id).all()
+
+
 def commit():
     db.session.commit()
 

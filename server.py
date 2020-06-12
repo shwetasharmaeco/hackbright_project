@@ -87,6 +87,34 @@ def show_orders():
     return json.dumps(all_orders)
 
 
+@app.route('/your-listings', methods=["POST","GET"])
+def show_listings():
+    print("*****I was here")
+    data = request.get_json()
+    user_id = data["user_id"]
+   
+    listings = crud.group_listings_by_id(user_id)
+    all_listings=[]
+    for listing in listings:
+        dict_l={}
+        l = crud.get_listing_by_id(listing)
+        category = crud.get_category_by_id(l.category_id)
+        city = crud.get_city_by_id(l.city_id)
+        dict_l["listing_id"] = l.listing_id
+        dict_l["name"] = l.listing_name
+        dict_l["description"] = l.description
+        dict_l["serves"]=l.serves
+        dict_l["category"]= category.category_name
+        dict_l["address"]=l.listing_address
+        dict_l["city"]= city.city_name
+        dict_l["time_from"]=l.time_from
+        dict_l["time_to"]=l.time_to
+        all_listings.append(dict_l)
+    print(all_listings)
+    return json.dumps(all_listings)
+
+
+
 
 
 
