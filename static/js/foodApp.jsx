@@ -126,9 +126,6 @@ handlesubmit(evt){
             document.getElementById("response").innerHTML = "Something went wrong"
         }
     
-        // else if (data === "email doesn't exist"){
-        //     this.setState({loggedIn:"A"})
-        // }
     });
 
 }
@@ -139,7 +136,6 @@ handlesubmit(evt){
         const loggedIn = this.state.loggedIn
         if (loggedIn){
             return(<div>
-            {/* <Order email={this.state.email}/> */}
             <Redirect to="/listings"/>
             </div>)
         }
@@ -147,7 +143,6 @@ handlesubmit(evt){
     return(
         
          <div>    
-                {/* <Order email={this.state.email}/> */}
                 <h1>Login Page</h1>
                 <p id="response"> </p>
                     <form id = "sign-in">
@@ -320,15 +315,7 @@ render(){
                     <option key={c["city_name"]} value={c["city_name"]}>{c["city_name"]}</option>))}
                 </select>
 
-
-
-
-            {/* <select className="qty" onChange={this.handleqty}>
-                    {this.state.qty.map(q=>(
-                    <option key={q} value="qty" onChange={this.handleqty}>{q}</option>))}
-                </select> */}
-             {/* <input type="text" name="city" value= {this.state.city} onChange={this.handlecity}></input>*/}
-             <br></br>
+            <br></br>
             <br></br> 
 
              <label>Email</label>
@@ -567,8 +554,9 @@ class Listing extends React.Component{
                     qty:1
                     }
                    
-        this.handleorder= this.handleorder.bind(this);
+        // this.handleorder= this.handleorder.bind(this);
         this.handleqty=this.handleqty.bind(this);
+        // this.handleseeorders=this.handleseeorders.bind(this);
         // this.handlepickup = this.handlepickup.bind(this,index);
     
 
@@ -579,61 +567,78 @@ class Listing extends React.Component{
             );
     }
 
-   
 
 
-    handleorder(evt){
-        evt.preventDefault();
-        alert("Confirm Pickup?");  
-
-        fetch('/place-order', 
-        {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-          body:JSON.stringify({qty:this.state.qty
-      })
+    // handleseeorders(e){
+    //     e.preventDefault(); 
         
-    })
-    // console.log(this.state)
-}
+    //     fetch('/your-orders',
+    //     {
+    //         method: 'POST',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body:JSON.stringify({user_id:localStorage.getItem("user_id")
+            
+    //     })
+    //     } 
+    //     )
+
+    //     .then(function(res){
+    //         return res.json()
+    //     })
+        
+
+    //     .then(dataO => { 
+            
+
+    //         console.log(dataO) 
+    //         localStorage.setItem("orders", dataO) ;
+    //         let display = ""
+            
+    //         for (const object of dataO){
+    //             let use = "<pre>" + "Listing:" + object["listing_name"] + "\n"+ "Address:" + object["listing_address"] + "\n"+ "Pickup between:" + object["listing_time_from"] + "-"+ object["listing_time_to"]  + "\n\n" + "</pre>"  
+    //             display += use
+    //             console.log(display)
+
+    //             document.getElementById("response").innerHTML = display}
+    //       }
+    //       ) 
+
+
+    // }
+   
 
   componentDidMount(){
     
-        fetch('/all-listings',)
+        fetch('/all-listings')
         .then(function(res){
             return res.json()
         })
 
         .then(data => { 
-            this.setState({listings:data,})
-            console.log(data)
-            console.log(this.state)
-        }) 
-       
-        
+            this.setState({listings:data})
+            // console.log(data)
+            // console.log(this.state)
+        })         
     }
 
     handlepickup(listing){
 
+       
         if (this.state.qty > listing.serves){
             // document.getElementById("response").innerHTML = localStorage.getItem("user_id")
             document.getElementById("response").innerHTML = "Not enough food"
             return
         }
+        // <Redirect to="/order"/>
 
+        listing.serves = listing.serves - this.state.qty
+        this.setState({serves:listing.serves})
+        
 
-
-        // document.getElementById("response").innerHTML = localStorage.getItem("user id")
-
-        // console.log(listing.serves)
-        // listing.serves = listing.serves - this.state.qty
-        // console.log(listing.serves)
-        // this.setState({serves:listing.serves})
-        // alert(listing.listing_id)
-        // console.log(this.state)
+        
         
         fetch('/update-listing', 
         {
@@ -652,6 +657,38 @@ class Listing extends React.Component{
     })
 
     .then(data_ => { 
+        if (data_ === "Order Placed"){
+            localStorage.setItem("listing_id", listing["listing_id"])
+            document.getElementById("response").innerHTML = data_
+
+
+
+         fetch('/place-order', 
+         {
+           method: 'POST',
+           headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'
+           },
+           body:JSON.stringify({user_id: localStorage.getItem("user_id"),
+           order_qty:this.state.qty,
+           listing_id: localStorage.getItem("listing_id")
+       })
+
+       }
+           )
+   
+       .then(function(res){
+           return res.json()
+              
+       })
+       .then(data => { 
+           localStorage.removeItem("listing_id")
+        //    document.getElementById("response").innerHTML = data
+           console.log(data)}) 
+            return
+        }
+        console.log(listing)
         console.log(data_)
         console.log(this.state)
         document.getElementById("response").innerHTML = data_
@@ -666,7 +703,7 @@ class Listing extends React.Component{
             return (<Redirect to ="/"/>)
         }
         else{
-            console.log(this.state.listings)
+            // console.log(this.state.listings)
         return (
         <div>    
                 <Link to="/new-listing">
@@ -675,25 +712,27 @@ class Listing extends React.Component{
                 
                 <label>For</label>
                 <select onChange={this.handleqty}>
-                    <option value="1" >1</option>
-                    <option value="2" >2</option>
-                    <option value="3" >3</option>
-                    <option value="4" >4</option>
+                    <option key ="1" value="1" >1</option>
+                    <option key ="2" value="2" >2</option>
+                    <option key ="3" value="3" >3</option>
+                    <option key ="4" value="4" >4</option>
                 </select>
-              
                 
-                {/* <select className="qty" onChange={this.handleqty}>
-                    {this.state.qty.map(q=>(
-                    <option key={q} value="qty" onChange={this.handleqty}>{q}</option>))}
-                </select> */}
+                <Link to="/order">
+                <button type="submit" value = "see-orders">See Orders</button>
+                </Link>
+                {/* <Link to="/order">
+                <button type="submit" value = "see-listings">See Listings</button>
+                </Link> */}
                 
+
                 <Link to="/logout">
                 <button type="submit" value= "Logout">Log Out</button>
                 </Link>
                 <p id="response"></p>
         {this.state.listings.map((listing,index) => (
            
-                <div key = {listing.name} className="listing">
+                <div key = {listing.listing_id} className="listing">
                     <ul>
                     <li key= {listing.listing_id}>
                     <br></br>
@@ -723,8 +762,9 @@ class Listing extends React.Component{
     
  class Logout extends React.Component {
      constructor(){
-         super();
-         localStorage.removeItem("token")
+        super();
+        localStorage.removeItem("token")
+        localStorage.removeItem("user_id")
      }
         render() {
             return (
@@ -745,20 +785,64 @@ class Listing extends React.Component{
     class Order extends React.Component{
         constructor(props){
             super(props);
-            this.handlesubmit = this.handlesubmit.bind(this);
+            this.state=({orders:[]})
+           
         }
-        handlesubmit(e){
-            e.preventDefault();
 
+
+        componentDidMount (){
+        
+            fetch('/your-orders',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({user_id:localStorage.getItem("user_id")
+                
+            })
+            } 
+            )
+    
+            .then(function(res){
+                return res.json()
+            })
+            .then(data => { 
+                this.setState({orders:data,})
+                console.log(data)
+                console.log(this.state)
+            }) 
+    
         }
+
+
         render(){
             
             return(<div>
-                <h1>Hi! this is order page {this.props.email}</h1>
-                <br></br>
-                <Link to="/listings">
-                    <button type="submit">Go Back</button>
+                <h1>Hi! this is order page</h1>
+                {this.state.orders.map((order) => (
+           
+           <div key = {order.listing_name} className="listing">
+               <ul>
+               <li key= {order.listing_name}>
+               <br></br>
+               <br></br>
+               
+               listing: {order.listing_name}<br></br>
+               address: {order.listing_address}<br></br>
+               pickup time : {order.listing_time_from} - {order.listing_time_to}
+               </li>
+               </ul>
+               
+           </div>
+   )
+   )}
+               <Link to="/listings">
+
+               <button type="submit" value="to-listings">Go back to listings</button>
                 </Link>
+
                 </div>)
         }
     }

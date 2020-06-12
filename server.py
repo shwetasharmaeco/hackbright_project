@@ -2,6 +2,8 @@
 from flask import (Flask, render_template, request, flash, session,
                    redirect,jsonify,json)
 
+from datetime import datetime
+
 from model import connect_to_db
 import crud
 from jinja2 import StrictUndefined
@@ -63,6 +65,31 @@ def all_listings():
     return json.dumps(main_list)
 
 
+@app.route('/your-orders', methods=["POST","GET"])
+def show_orders():
+    print("*****I was here")
+    data = request.get_json()
+    user_id = data["user_id"]
+    orders = crud.group_orders_by_id(user_id)
+    all_orders=[]
+    for order in orders:
+        dict_o={}
+        o = crud.get_listing_by_id(order)
+        dict_o["listing_name"] = o.listing_name
+        dict_o["listing_address"] = o.listing_address
+        dict_o["listing_time_from"]= o.time_from 
+        dict_o["listing_time_to"]= o.time_to
+        all_orders.append(dict_o)
+    # print(all_orders)
+
+    # (user_id, listing_name, serves, category_id,  
+    #                 description, listing_address, city_id, time_from, time_to)
+    return json.dumps(all_orders)
+
+
+
+
+
 @app.route('/sign-up', methods=['POST',"GET"])
 def handle_sign_up():
     """Create a new user."""
@@ -94,7 +121,7 @@ def update_listing():
     # while True:
     if listing:
     
-        if listing.serves > int(data_["qty"]):
+        if listing.serves >= int(data_["qty"]):
             serves = listing.serves - int(data_["qty"])
             crud.update_serves_for_listing_by_id(listing.listing_id,serves)
             listing = crud.get_listing_by_id(data_["listing_id"])
@@ -157,12 +184,16 @@ def handle_sign_in():
 def place_order():
     print("*****I was here")
     data = request.get_json()
-    # user = crud.get_user_by_email()
+    user_id = data["user_id"]
+    order_qty = data["order_qty"]
+    listing_id = data["listing_id"]
+    confirmed_at=datetime.now()
+    crud.create_order(user_id,order_qty,listing_id,confirmed_at)
     # (user_id, order_qty, listing_id, confirmed_at)
-    return jsonify("bccjcdcbjc")
+    return jsonify("Order created")
 
    
-  
+
 
 
 

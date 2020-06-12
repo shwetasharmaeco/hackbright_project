@@ -99,7 +99,8 @@ def update_serves_for_listing_by_id(listing_id,serves):
     db.session.commit() 
     
  
-  
+def group_orders_by_id(user_id):
+    return db.session.query(Order.listing_id).group_by(Order.user_id, Order.listing_id).having(Order.user_id == user_id).all()
 
 def commit():
     db.session.commit()
