@@ -59,10 +59,31 @@ def all_listings():
         dict_["category"]= category.category_name
         dict_["address"]=listing.listing_address
         dict_["city"]= city.city_name
+        dict_["listing_date"]= listing.listing_date
         dict_["time_from"]=listing.time_from
         dict_["time_to"]=listing.time_to
-        main_list.append(dict_)
+        if dict_["serves"] == 0:
+            continue
+        else:
+            main_list.append(dict_)
     return json.dumps(main_list)
+
+
+
+@app.route("/all-addresses", methods=["POST","GET"] )
+def all_add():
+    all_add=[]
+    listings = crud.all_listings()
+    
+    
+    for listing in listings:
+        dict_a={}
+        # city = crud.get_city_by_id(listing.city_id)
+        dict_a["lat"]= listing.lat
+        dict_a["lng"]= listing.lng
+        all_add.append(dict_a)
+    print(all_add)
+    return json.dumps(all_add)
 
 
 @app.route('/your-orders', methods=["POST","GET"])
@@ -74,13 +95,14 @@ def show_orders():
     all_orders=[]
     for order in orders:
         dict_o={}
-        o = crud.get_listing_by_id(order)
+        o = crud.get_listing_by_id(order.listing_id)
         dict_o["listing_name"] = o.listing_name
         dict_o["listing_address"] = o.listing_address
         dict_o["listing_time_from"]= o.time_from 
         dict_o["listing_time_to"]= o.time_to
+        dict_o["listing_date"]=o.listing_date
         all_orders.append(dict_o)
-    # print(all_orders)
+    print(all_orders)
 
     # (user_id, listing_name, serves, category_id,  
     #                 description, listing_address, city_id, time_from, time_to)
@@ -89,15 +111,15 @@ def show_orders():
 
 @app.route('/your-listings', methods=["POST","GET"])
 def show_listings():
-    print("*****I was here")
     data = request.get_json()
     user_id = data["user_id"]
    
     listings = crud.group_listings_by_id(user_id)
+    
     all_listings=[]
     for listing in listings:
         dict_l={}
-        l = crud.get_listing_by_id(listing)
+        l = crud.get_listing_by_id(listing.listing_id)
         category = crud.get_category_by_id(l.category_id)
         city = crud.get_city_by_id(l.city_id)
         dict_l["listing_id"] = l.listing_id
@@ -107,10 +129,10 @@ def show_listings():
         dict_l["category"]= category.category_name
         dict_l["address"]=l.listing_address
         dict_l["city"]= city.city_name
+        dict_l["listing_date"]=l.listing_date
         dict_l["time_from"]=l.time_from
         dict_l["time_to"]=l.time_to
         all_listings.append(dict_l)
-    print(all_listings)
     return json.dumps(all_listings)
 
 
@@ -173,6 +195,7 @@ def new_listing():
     category = crud.get_category_by_name(data["category"])
     city = crud.get_city_by_name(data["city"])
 
+
   
     if user:
         
@@ -180,7 +203,7 @@ def new_listing():
     
         crud.create_listing(user.user_id, data["listing_name"], data["serves"], 
                            category.category_id, data["description"], data["listing_address"],
-                            city.city_id, data["time_from"], data["time_to"])
+                            city.city_id, data["date"],data["time_from"], data["time_to"])
         return jsonify(f'Thank you {user.name}! Your listing has been added')
     
     else:

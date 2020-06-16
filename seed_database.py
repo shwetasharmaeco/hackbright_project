@@ -59,16 +59,18 @@ for n in range(15):
     category_id = category.category_id
     description = fake.sentence()
     listing_address = fake.address()
+    lat = fake.latitude()
+    lng = fake.longitude()
     city = choice(cities_list)
     city_id = city.city_id
+    listing_date = fake.date()
     time_from= fake.time()
     time_to = fake.time()
-    # time_from= fake.date_time_this_month(before_now=False, after_now =False)
-    # time_to = fake.date_time_this_month(before_now=False, after_now =False)
+   
 
 
     listing = crud.create_listing(user_id,listing_name, serves, category_id, 
-                    description, listing_address, city_id, time_from, time_to)
+                    description, listing_address, lat, lng ,city_id, listing_date,time_from, time_to)
     listings_list.append(listing)
 
 
@@ -80,6 +82,6 @@ for n in range(6):
     order_qty = randint(1,3)
     listing = choice(listings_list)
     confirmed_at = datetime.now()
-    order = crud.create_order(user=user, order_qty=order_qty,
-                             listing= listing, 
+    order = crud.create_order(user_id=user.user_id, order_qty=order_qty,
+                             listing_id= listing.listing_id, 
                              confirmed_at=confirmed_at)

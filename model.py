@@ -108,7 +108,11 @@ class Listing(db.Model):
 
     listing_address =  db.Column(db.String, nullable = False)
 
-    
+    lat = db.Column(db.Float)
+
+    lng = db.Column(db.Float)
+
+    listing_date = db.Column(db.String, nullable = False)
 
     time_from = db.Column(db.String, nullable = False)
 

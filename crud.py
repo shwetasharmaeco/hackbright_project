@@ -1,7 +1,7 @@
 """ CRUD operations for hackbright_project"""
 
 from model import db, User, City, Category, Listing, Order, connect_to_db
-
+from sqlalchemy.sql import func
 
 def create_city(city_name, zipcode):
     """ creates and returns a city object """
@@ -32,7 +32,7 @@ def create_user(name, phone, street_address, email,password, city_id):
 
 
 def create_listing(user_id, listing_name, serves, category_id,  
-                    description, listing_address, city_id, time_from, time_to):
+                    description, listing_address,lat, lng, city_id, listing_date,time_from, time_to):
     """ create and return listing """
 
     listing = Listing(user_id= user_id,
@@ -41,7 +41,10 @@ def create_listing(user_id, listing_name, serves, category_id,
                     category_id = category_id, 
                     description = description, 
                     listing_address = listing_address, 
+                    lat = lat,
+                    lng =lng,
                     city_id = city_id,
+                    listing_date = listing_date,
                     time_from = time_from, 
                     time_to= time_to)
 
@@ -100,12 +103,16 @@ def update_serves_for_listing_by_id(listing_id,serves):
     
  
 def group_orders_by_id(user_id):
-    return db.session.query(Order.listing_id).group_by(Order.user_id, Order.listing_id).having(Order.user_id == user_id).all()
+    # return db.session.query((Order.listing_id)).group_by(Order.user_id,Order.listing_id).having(Order.user_id == user_id).all()
+    return Order.query.filter(Order.user_id == user_id).all()
 
 
 def group_listings_by_id(user_id):
-    return db.session.query(Listing.listing_id).group_by(Listing.user_id, Listing.listing_id).having(Listing.user_id == user_id).all()
+    # return db.session.query(Listing.listing_id).group_by(Listing.user_id, Listing.listing_id).having(Listing.user_id == user_id).all()
+    return Listing.query.filter(Listing.user_id==user_id).all()
 
+# def delete_listing():
+#     Listing.query.filter(Listing.serves == 0).delete()
 
 def commit():
     db.session.commit()
