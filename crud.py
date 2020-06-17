@@ -32,7 +32,7 @@ def create_user(name, phone, street_address, email,password, city_id):
 
 
 def create_listing(user_id, listing_name, serves, category_id,  
-                    description, listing_address,lat, lng, city_id, listing_date,time_from, time_to):
+                    description, listing_address,listing_zipcode,lat, lng, city_id, listing_date,time_from, time_to):
     """ create and return listing """
 
     listing = Listing(user_id= user_id,
@@ -41,6 +41,7 @@ def create_listing(user_id, listing_name, serves, category_id,
                     category_id = category_id, 
                     description = description, 
                     listing_address = listing_address, 
+                    listing_zipcode = listing_zipcode,
                     lat = lat,
                     lng =lng,
                     city_id = city_id,

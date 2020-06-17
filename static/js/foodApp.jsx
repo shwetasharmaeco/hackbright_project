@@ -245,7 +245,6 @@ handlesubmit(evt){
 
         else{
             const cities = this.state.cities
-            console.log(cities)
             return (
                 <div>  
             
@@ -307,13 +306,14 @@ handlesubmit(evt){
 class NewListing extends React.Component{
     constructor(){
         super();
-        this.state = {lister_email : "",
+        this.state = {
                     listing_name : "",
                     serves:"",
                     category:"",
                     description:"",
                     listing_address: "",
                     city:"",
+                    zipcode:"",
                     date:"",
                     time_from:"",
                     time_to:"",
@@ -324,11 +324,12 @@ class NewListing extends React.Component{
         this.handlecategory = this.handlecategory.bind(this);
         this.handleaddress = this.handleaddress.bind(this);
         this.handlecity= this.handlecity.bind(this);
-        this.handleemail= this.handleemail.bind(this);
+        // this.handleemail= this.handleemail.bind(this);
         this.handledescription = this.handledescription.bind(this);
         this.handletimefrom = this.handletimefrom.bind(this);
         this.handletimeto = this.handletimeto.bind(this);
         this.handledate = this.handledate.bind(this);
+        this.handlezipcode = this.handlezipcode.bind(this);
         this.handlesubmit = this.handlesubmit.bind(this);
         
     }
@@ -349,9 +350,14 @@ class NewListing extends React.Component{
         this.setState({city:evt.target.value});
     }
 
-    handleemail(evt){
-        this.setState({lister_email:evt.target.value});
+    handlezipcode(evt){
+        this.setState({zipcode:evt.target.value});
     }
+
+
+    // handleemail(evt){
+    //     this.setState({lister_email:evt.target.value});
+    // }
 
     handlecategory(evt){
         this.setState({category:evt.target.value});
@@ -373,7 +379,12 @@ class NewListing extends React.Component{
         this.setState({time_to:evt.target.value});
     }
 
+
+
+    
+
     componentDidMount(){
+       
     
         fetch('/categories')
         .then(function(response){
@@ -388,10 +399,13 @@ class NewListing extends React.Component{
     }
 
 
+  
+
 
     handlesubmit(evt){
         evt.preventDefault();
         console.log(this.state);
+
      
         fetch('/new-listing', 
            {
@@ -400,13 +414,14 @@ class NewListing extends React.Component{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify({lister_email : this.state.lister_email,
+            body:JSON.stringify({user_id : localStorage.getItem("user_id"),
             listing_name : this.state.listing_name,
             serves:this.state.serves,
             category:this.state.category,
             description:this.state.description,
             listing_address:this.state.listing_address,
             city:this.state.city,
+            zipcode : this.state.zipcode,
             date:this.state.date,
             time_from:this.state.time_from,
             time_to:this.state.time_to   
@@ -421,7 +436,9 @@ class NewListing extends React.Component{
         .then(data => { 
             document.getElementById("response").innerHTML = data
             console.log(data)
-        })    
+        }) 
+        
+        
     }
 
     render(){
@@ -440,10 +457,10 @@ class NewListing extends React.Component{
                         <br></br>
                             <form id= "new-listing">
                         
-                                    <label>Email</label>
+                                    {/* <label>Email</label>
                                     <input type= "text" name="email" value= {this.state.lister_email} onChange={this.handleemail}></input>
                                     <br></br>
-                                    <br></br>
+                                    <br></br> */}
 
                         
                                     <label>Listing Name</label>
@@ -463,6 +480,11 @@ class NewListing extends React.Component{
                         
                                     <label>City</label>
                                     <input type="text" name="city" value= {this.state.city} onChange={this.handlecity}></input>
+                                    <br></br>
+                                    <br></br>
+
+                                    <label>Zipcode</label>
+                                    <input type="text" name="zipcode" value= {this.state.zipcode} onChange={this.handlezipcode}></input>
                                     <br></br>
                                     <br></br>
 
@@ -770,6 +792,7 @@ class YourListing extends React.Component{
     }
 
     componentDidMount (){
+        
     
         fetch('/your-listings',
         {
@@ -837,16 +860,15 @@ class GoogleMap extends React.Component {
         super();
         this.state ={
             add : [],
-            mapLoaded: false
+            mapLoaded: false,
+
         }
     }
+
     googleMapRef = React.createRef()
-   
-  
     
     componentDidMount() { 
-
-        
+        console.log("*******",this.info)
         fetch('/all-addresses',
         {
             method: 'POST',
@@ -868,57 +890,77 @@ class GoogleMap extends React.Component {
             console.log(this.state)
         }) 
 
-
-
-      const googleMapScript = document.createElement('script')
-      googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18&libraries=places`
-      window.document.body.appendChild(googleMapScript)
+        const googleMapScript = document.createElement('script')
+        googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18&libraries=places`
+        window.document.body.appendChild(googleMapScript)
   
 
-      googleMapScript.addEventListener("load", () => { 
+        googleMapScript.addEventListener("load", () => { 
         this.googleMap = this.createGoogleMap()
+        this.info = this.infowindow()
+        console.log("!!!!!!!!",this.info)
         this.setState({mapLoaded: true})
+     
       }); 
     }
+
+
+
   
     createGoogleMap = () => 
       
       new window.google.maps.Map(this.googleMapRef.current, {
-        zoom: 8,
+        zoom: 12,
         center: {
-          lat: 37.773972,
-          lng: -122.431297,
+          lat:  37.7749504  ,
+          lng:  -122.4507392,
         },
         disableDefaultUI: true,
       })
+
+
+     infowindow =() =>
+     new google.maps.InfoWindow({
+        content:"Hello World!"
+      });
     
   
-    createMarker = (l1,l2) => {
+    createMarker = (l1,l2) => 
         new window.google.maps.Marker({
         position: {lat: parseFloat(l1), lng: parseFloat(l2)},
         map: this.googleMap,
-
-      })
-    }
+      });
+   
     
-
-
-    placeMarkers=()=> {
+    
+    placeMarkers=(information)=> {
       
         for (const a of this.state.add){
-        this.createMarker(a.lat, a.lng)
+        const marker = this.createMarker(a.lat, a.lng)
+        
+        marker.addListener('click', function() {
+            information.setContent(`
+            <div>
+                <p>
+                    <b> ${a.name} </b>
+                    <br>
+                    Serves = ${a.serves} 
+                    <br>
+                    Pickup = ${a.time_from}- ${a.time_to} on ${a.listing_date}
+                </p>
+            </div>
+            `)
+            information.open(this.googleMap, marker);
+          });
         }
     }
   
 
-   
-
     render() {
         
         if (this.state.mapLoaded && this.state.add){
-             (this.placeMarkers())}
-
-
+            // console.log(this.info)
+             this.placeMarkers(this.info)}
       
       return (
           <div>

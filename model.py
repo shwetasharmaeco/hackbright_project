@@ -14,7 +14,7 @@ class City(db.Model):
 
     zipcode = db.Column(db.String)
 
-    city_name = db.Column (db.String, unique = True, nullable = False)
+    city_name = db.Column (db.String, nullable = False)
 
 
     def __repr__(self):
@@ -108,11 +108,13 @@ class Listing(db.Model):
 
     listing_address =  db.Column(db.String, nullable = False)
 
+    listing_zipcode = db.Column(db.String(5), nullable = False)
+
     lat = db.Column(db.Float)
 
     lng = db.Column(db.Float)
 
-    listing_date = db.Column(db.String, nullable = False)
+    listing_date = db.Column(db.String, nullable = False)     #change db.string
 
     time_from = db.Column(db.String, nullable = False)
 

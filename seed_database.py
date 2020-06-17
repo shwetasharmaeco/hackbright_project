@@ -16,9 +16,10 @@ model.db.create_all()
 
 ##### CITY ######
 cities_list = []
+c = ["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton" ]
 for n in range (5):
     zipcode = fake.postcode()
-    city_name = fake.city()
+    city_name = choice(["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton",  "Sacramento" ])
     city = crud.create_city(city_name, zipcode)
     cities_list.append(city) 
 
@@ -59,6 +60,7 @@ for n in range(15):
     category_id = category.category_id
     description = fake.sentence()
     listing_address = fake.address()
+    listing_zipcode = fake.postcode()
     lat = fake.latitude()
     lng = fake.longitude()
     city = choice(cities_list)
@@ -70,7 +72,7 @@ for n in range(15):
 
 
     listing = crud.create_listing(user_id,listing_name, serves, category_id, 
-                    description, listing_address, lat, lng ,city_id, listing_date,time_from, time_to)
+                    description, listing_address, listing_zipcode, lat, lng ,city_id, listing_date,time_from, time_to)
     listings_list.append(listing)
 
 

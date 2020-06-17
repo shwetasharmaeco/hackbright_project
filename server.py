@@ -2,15 +2,18 @@
 from flask import (Flask, render_template, request, flash, session,
                    redirect,jsonify,json)
 
-from datetime import datetime
+from datetime import (datetime,date)
 
 from model import connect_to_db
 import crud
 from jinja2 import StrictUndefined
+import urllib.request
 
 app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+
+
 
 @app.route('/')
 def homepage():
@@ -45,6 +48,7 @@ def all_listings():
     main_list=[]
     listings = crud.all_listings()
     data = request.get_json()
+    date_today = date.today()
    
     for listing in listings:
         dict_ = {}
@@ -58,12 +62,14 @@ def all_listings():
         dict_["serves"]=listing.serves
         dict_["category"]= category.category_name
         dict_["address"]=listing.listing_address
+        dict_["zipcode"]= listing.listing_zipcode
         dict_["city"]= city.city_name
         dict_["listing_date"]= listing.listing_date
+      
         dict_["time_from"]=listing.time_from
         dict_["time_to"]=listing.time_to
-        if dict_["serves"] == 0:
-            continue
+        if dict_["serves"] == 0 :     
+            continue    
         else:
             main_list.append(dict_)
     return json.dumps(main_list)
@@ -81,14 +87,20 @@ def all_add():
         # city = crud.get_city_by_id(listing.city_id)
         dict_a["lat"]= listing.lat
         dict_a["lng"]= listing.lng
+        dict_a["name"] = listing.listing_name
+        dict_a["serves"]=listing.serves
+        dict_a["listing_date"]= listing.listing_date
+        dict_a["time_from"]=listing.time_from
+        dict_a["time_to"]=listing.time_to
+        
         all_add.append(dict_a)
-    print(all_add)
+    # print(all_add)
     return json.dumps(all_add)
 
 
 @app.route('/your-orders', methods=["POST","GET"])
 def show_orders():
-    print("*****I was here")
+    # print("*****I was here")
     data = request.get_json()
     user_id = data["user_id"]
     orders = crud.group_orders_by_id(user_id)
@@ -102,7 +114,7 @@ def show_orders():
         dict_o["listing_time_to"]= o.time_to
         dict_o["listing_date"]=o.listing_date
         all_orders.append(dict_o)
-    print(all_orders)
+    # print(all_orders)
 
     # (user_id, listing_name, serves, category_id,  
     #                 description, listing_address, city_id, time_from, time_to)
@@ -164,10 +176,10 @@ def handle_sign_up():
 @app.route("/update-listing", methods=['POST',"GET"])
 def update_listing():
     data_ = request.get_json()
-    print(data_)
+    # print(data_)
  
     listing = crud.get_listing_by_id(data_["listing_id"])
-    print("*******",listing.serves)
+    # print("*******",listing.serves)
     # while True:
     if listing:
     
@@ -175,7 +187,7 @@ def update_listing():
             serves = listing.serves - int(data_["qty"])
             crud.update_serves_for_listing_by_id(listing.listing_id,serves)
             listing = crud.get_listing_by_id(data_["listing_id"])
-            print("*******",listing.serves)
+            # print("*******",listing.serves)
             return jsonify("Order Placed")
         else:
             return jsonify("Sorry! We do not have enough food")
@@ -184,25 +196,37 @@ def update_listing():
         return ("no listing found")
         
   
-        
+
+API_KEY =  "AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18"
+GEOCODE_BASE_URL = "https://maps.googleapis.com/maps/api/geocode/json"      
 
 
 @app.route('/new-listing', methods=["POST"])
 def new_listing():
     """ creates new listing """
     data = request.get_json()
-    user = crud.get_user_by_email(data["lister_email"])
+
+
+    params = urllib.parse.urlencode({"address": f'{data["listing_address"]} {data["city"]} {data["zipcode"]} CA' , "key": API_KEY})
+    url = f"{GEOCODE_BASE_URL}?{params}"
+
+    result = json.load(urllib.request.urlopen(url))
+
+    if result["status"] in ["OK", "ZERO_RESULTS"]:
+        coords = (result["results"][0]["geometry"]["location"])
+    
+    else:
+        raise Exception(result["error_message"])
+
+
+    user = crud.get_user_by_id(data["user_id"])
     category = crud.get_category_by_name(data["category"])
     city = crud.get_city_by_name(data["city"])
 
-
   
     if user:
-        
-        print("********trying to create a listing")
-    
         crud.create_listing(user.user_id, data["listing_name"], data["serves"], 
-                           category.category_id, data["description"], data["listing_address"],
+                           category.category_id, data["description"], data["listing_address"],data["zipcode"], coords["lat"], coords["lng"],
                             city.city_id, data["date"],data["time_from"], data["time_to"])
         return jsonify(f'Thank you {user.name}! Your listing has been added')
     
@@ -233,7 +257,7 @@ def handle_sign_in():
 
 @app.route('/place-order', methods=["POST","GET"] )
 def place_order():
-    print("*****I was here")
+    # print("*****I was here")
     data = request.get_json()
     user_id = data["user_id"]
     order_qty = data["order_qty"]
@@ -251,3 +275,9 @@ def place_order():
 if __name__ == '__main__':
     connect_to_db(app)
     app.run(host='0.0.0.0', debug=True)
+
+
+
+#and datetime_object < date_today:
+           
+      # datetime_object = datetime.strptime(dict_["listing_date"], "%Y-%m-%d" )
