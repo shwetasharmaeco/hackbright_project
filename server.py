@@ -43,12 +43,13 @@ def all_cities():
     
     return json.dumps(cities_)
 
-@app.route('/all-listings')
+@app.route('/all-listings', methods=["POST"])
 def all_listings():
     main_list=[]
     listings = crud.all_listings()
     data = request.get_json()
     date_today = date.today()
+    # print(data["current_location"])
    
     for listing in listings:
         dict_ = {}
@@ -64,11 +65,12 @@ def all_listings():
         dict_["address"]=listing.listing_address
         dict_["zipcode"]= listing.listing_zipcode
         dict_["city"]= city.city_name
-        dict_["listing_date"]= listing.listing_date
-      
+        dict_["listing_date"]=  listing.listing_date.strftime("%A %d %B, %Y")
+        # listing.listing_date.isoformat()
+        
         dict_["time_from"]=listing.time_from
         dict_["time_to"]=listing.time_to
-        if dict_["serves"] == 0 :     
+        if dict_["serves"] == 0 or listing.listing_date < date_today :     
             continue    
         else:
             main_list.append(dict_)
@@ -80,7 +82,7 @@ def all_listings():
 def all_add():
     all_add=[]
     listings = crud.all_listings()
-    
+    date_today = date.today()
     
     for listing in listings:
         dict_a={}
@@ -89,11 +91,16 @@ def all_add():
         dict_a["lng"]= listing.lng
         dict_a["name"] = listing.listing_name
         dict_a["serves"]=listing.serves
-        dict_a["listing_date"]= listing.listing_date
+        # dict_a["listing_date"]= listing.listing_date
+        dict_a["listing_date"]=  listing.listing_date.strftime("%A %d %B, %Y")
         dict_a["time_from"]=listing.time_from
         dict_a["time_to"]=listing.time_to
+        if dict_a["serves"] == 0 or listing.listing_date < date_today :     
+            continue    
+        else:
+            all_add.append(dict_a)
         
-        all_add.append(dict_a)
+        # all_add.append(dict_a)
     # print(all_add)
     return json.dumps(all_add)
 
@@ -112,7 +119,8 @@ def show_orders():
         dict_o["listing_address"] = o.listing_address
         dict_o["listing_time_from"]= o.time_from 
         dict_o["listing_time_to"]= o.time_to
-        dict_o["listing_date"]=o.listing_date
+        # dict_o["listing_date"]=o.listing_date
+        dict_o["listing_date"]=  o.listing_date.strftime("%A %d %B, %Y")
         all_orders.append(dict_o)
     # print(all_orders)
 
@@ -141,7 +149,8 @@ def show_listings():
         dict_l["category"]= category.category_name
         dict_l["address"]=l.listing_address
         dict_l["city"]= city.city_name
-        dict_l["listing_date"]=l.listing_date
+        # dict_l["listing_date"]=l.listing_date
+        dict_l["listing_date"]=  l.listing_date.strftime("%A %d %B, %Y")
         dict_l["time_from"]=l.time_from
         dict_l["time_to"]=l.time_to
         all_listings.append(dict_l)

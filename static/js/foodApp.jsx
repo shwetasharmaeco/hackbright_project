@@ -510,7 +510,7 @@ class NewListing extends React.Component{
                                     <br></br> 
 
                                     <label>Available On</label>
-                                    <input type="text" name="date" placeholder="DD/MM/YYY" value= {this.state.date} onChange={this.handledate}></input>
+                                    <input type="text" name="date" placeholder="YYYY-MM-DD" value= {this.state.date} onChange={this.handledate}></input>
                                     <br></br>
                                     <br></br>
 
@@ -546,10 +546,12 @@ class Listing extends React.Component{
         }
 
         this.state = {listings: [],
-                    qty:1
+                    qty:1,
+                    current_location:""
                     }
                    
         this.handleqty=this.handleqty.bind(this);  
+        this.handlecurrentlocation= this.handlecurrentlocation.bind(this)
     }
 
 
@@ -557,11 +559,28 @@ class Listing extends React.Component{
         this.setState({qty:e.target.value},  
             );
     }
+
+    handlecurrentlocation(e){
+        this.setState({current_location:e.target.value},  
+            );
+    }
    
 
     componentDidMount(){
     
-        fetch('/all-listings')
+        fetch('/all-listings',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                current_location : this.state.current_location
+              })
+          
+        })
+
         .then(function(res){
             return res.json()
         })
@@ -611,7 +630,8 @@ class Listing extends React.Component{
                 },
                 body:JSON.stringify({user_id: localStorage.getItem("user_id"),
                 order_qty:this.state.qty,
-                listing_id: localStorage.getItem("listing_id")
+                listing_id: localStorage.getItem("listing_id"),
+                
                 })
             }
             )
@@ -642,7 +662,11 @@ class Listing extends React.Component{
 
         else{
             return (
-                <div>    
+                <div>  
+                    <label> Current Location </label>
+                    <input type="text" name="dcurrent location" value= {this.state.current_location} onChange={this.handlecurrentlocation}></input>
+                    <br></br>
+                    <br></br>
                     <Link to="/new-listing">
                     <button type="submit" value= "new-listing">Upload new Listing</button>
                     </Link>

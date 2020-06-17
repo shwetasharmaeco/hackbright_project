@@ -114,7 +114,7 @@ class Listing(db.Model):
 
     lng = db.Column(db.Float)
 
-    listing_date = db.Column(db.String, nullable = False)     #change db.string
+    listing_date = db.Column(db.Date, nullable = False)     #change db.string
 
     time_from = db.Column(db.String, nullable = False)
 
