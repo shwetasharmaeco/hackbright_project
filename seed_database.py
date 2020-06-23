@@ -4,6 +4,7 @@ import crud
 from faker import Faker
 import model
 import server
+import random
 from random import choice, randint
 from datetime import datetime 
 fake = Faker()
@@ -16,12 +17,20 @@ model.db.create_all()
 
 ##### CITY ######
 cities_list = []
-c = ["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton" ]
-for n in range (5):
+cities_names=[]
+c = ["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton", "Santa Clara", "Berkley" ]
+for city in c:
+
     zipcode = fake.postcode()
-    city_name = choice(["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton",  "Sacramento" ])
+
+    city_name = city
+    # if city_name in cities_names:
+    #     city_name = choice(c)
+    # else:
+    #     cities_names.append(city_name)
+    
     city = crud.create_city(city_name, zipcode)
-    cities_list.append(city) 
+    cities_list.append(city)  
 
 
 ###### USER #######
@@ -42,8 +51,9 @@ for n in range(10):
    
 ##### CATEGORY ####
 categories_list=[]
-for n in range (15):
-    category_name = fake.word()
+cat = ["Home Cooked", "Restaurant food", "Packaged food", "Vegetables", "Fruits", "Other"]
+for n in cat:
+    category_name = n
     category = crud.create_category(category_name)
     categories_list.append(category)
 
@@ -66,8 +76,10 @@ for n in range(15):
     city = choice(cities_list)
     city_id = city.city_id
     listing_date = fake.date()
-    time_from= fake.time()
-    time_to = fake.time()
+    # time_from= fake.time()
+    time_from= "03:55"
+    # time_to = fake.time()
+    time_to = "05:00"
    
 
 

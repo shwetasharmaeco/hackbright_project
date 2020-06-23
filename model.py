@@ -14,7 +14,7 @@ class City(db.Model):
 
     zipcode = db.Column(db.String)
 
-    city_name = db.Column (db.String, nullable = False)
+    city_name = db.Column (db.String, nullable = False, unique= True)
 
 
     def __repr__(self):
