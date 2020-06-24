@@ -263,8 +263,11 @@ def update_listing():
     sid = account_sid
     token = auth_token
     client = Client(sid, token)
- 
+    user = crud.get_user_by_id(data_["user_id"])
     listing = crud.get_listing_by_id(data_["listing_id"])
+    lister = crud.get_user_by_id(listing.user_id)
+
+    
     if listing:
     
         if listing.serves >= int(data_["qty"]):
@@ -272,16 +275,26 @@ def update_listing():
             crud.update_serves_for_listing_by_id(listing.listing_id,serves)
             listing = crud.get_listing_by_id(data_["listing_id"])
             city = crud.get_city_by_id(listing.city_id)
-            body = f"Hi there! You requested pickup for {listing.listing_name} \n From {listing.listing_address}, {city.city_name} {city.zipcode} \n Pickup between {listing.time_from} - {listing.time_to} "
+            body_for_user = f"Hi there! You requested pickup for {listing.listing_name} \nFrom {listing.listing_address}, {city.city_name} {city.zipcode} \nPickup between {listing.time_from} - {listing.time_to} "
+            body_for_lister = f"Hi there! {user.name} will pickup {listing.listing_name} between {listing.time_from} - {listing.time_to}"
             message = client.messages.create(
-                              body=body,
+                              body=body_for_user,
                               from_='+12104465258',
-                              to='7348469615'
+                              to=user.phone
                           )
 
+            message = client.messages.create(
+                              body=body_for_lister,
+                              from_='+12104465258',
+                              to=lister.phone
+                          )
+
+
+
+
             print(message.sid)
-            # print("*******",listing.serves)
             return jsonify("Order Placed")
+
         else:
             return jsonify("Sorry! We do not have enough food")
 

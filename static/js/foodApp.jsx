@@ -739,7 +739,8 @@ class Listing extends React.Component{
               'Content-Type': 'application/json'
           },
           body:JSON.stringify({listing_id:listing.listing_id,
-            qty:this.state.qty
+            qty:this.state.qty,
+            user_id: localStorage.getItem("user_id")
             })
         
         })
