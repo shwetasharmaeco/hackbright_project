@@ -1,4 +1,4 @@
-""" Model for food-app """
+""" Model for HomNom """
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,6 +19,7 @@ class City(db.Model):
 
     def __repr__(self):
         return f'<City city_id={self.city_id} name={self.city_name}>'
+
 
 class User(db.Model):
 
@@ -70,17 +71,16 @@ class Category(db.Model):
     
     category_name = db.Column(db.String, unique = True)
 
-    # listing = db.relationship("Listing", backref = "category")
 
     def __repr__(self):
         return f'<Category categiry_id={self.category_id} name={self.category_name}>'
 
 
+
 class Listing(db.Model):
 
     __tablename__ = "listings"
-# user, listing_name, serves, category,  
-#                     description, listing_address, city, time_from, time_to):
+
     listing_id = db.Column (db.Integer, 
                     autoincrement = True, 
                     primary_key = True,
@@ -127,6 +127,7 @@ class Listing(db.Model):
     
     def __repr__(self):
         return f'<Listing listing_id={self.listing_id} name={self.listing_name}>'
+
 
 
 class Order(db.Model):

@@ -144,6 +144,7 @@ class Login extends React.Component{
     
 }
 
+
 class Signup extends React.Component{
     constructor(){
         super();
@@ -169,80 +170,79 @@ class Signup extends React.Component{
 
 
 
-handlename(evt){
-    this.setState({name:evt.target.value});
-}
+    handlename(evt){
+        this.setState({name:evt.target.value});
+    }
 
-handlenumber(evt){
-        this.setState({number:evt.target.value});
-}
+    handlenumber(evt){
+            this.setState({number:evt.target.value});
+    }
 
-handleaddress(evt){
-        this.setState({address:evt.target.value});
-}
+    handleaddress(evt){
+            this.setState({address:evt.target.value});
+    }
 
-handlecity(evt){
-    this.setState({city:evt.target.value});
-}
+    handlecity(evt){
+        this.setState({city:evt.target.value});
+    }
 
-handleemail(evt){
-    this.setState({email:evt.target.value});
-}
+    handleemail(evt){
+        this.setState({email:evt.target.value});
+    }
 
-handlepassword(evt){
-    this.setState({password:evt.target.value});
-}
+    handlepassword(evt){
+        this.setState({password:evt.target.value});
+    }
 
-componentDidMount(){
-    
-    fetch('/cities')
-    .then(function(response){
-        return response.json()
-    })
+    componentDidMount(){
+        
+        fetch('/cities')
+        .then(function(response){
+            return response.json()
+        })
 
-    .then(data_ => { 
-        this.setState({cities:data_,})
-        console.log(data_)
-        console.log(this.state)
-    })     
-}
-
-
-handlesubmit(evt){
-    evt.preventDefault();
-    // console.log(this.state);
-    localStorage.setItem("address", `${this.state.address} ${this.state.city} CA`)
+        .then(data_ => { 
+            this.setState({cities:data_,})
+            console.log(data_)
+            console.log(this.state)
+        })     
+    }
 
 
-    fetch('/sign-up', 
-        {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body:JSON.stringify({name : this.state.name,
-        number : this.state.number,
-        address:this.state.address,
-        city:this.state.city,
-        email:this.state.email,
-        password:this.state.password})
-        }   
-    )
+    handlesubmit(evt){
+        evt.preventDefault();
+        localStorage.setItem("address", `${this.state.address} ${this.state.city} CA`)
 
-    .then(function(res){
-        return res.json()     
-    })
 
-    .then(data => { 
-        document.getElementById("response").innerHTML = data
-        console.log(data)
-        if (data === 'Account created! Please log in'){
-            this.setState({signedUp: true})
-        };
-    } 
-    )      
-}
+        fetch('/sign-up', 
+            {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({name : this.state.name,
+            number : this.state.number,
+            address:this.state.address,
+            city:this.state.city,
+            email:this.state.email,
+            password:this.state.password})
+            }   
+        )
+
+        .then(function(res){
+            return res.json()     
+        })
+
+        .then(data => { 
+            document.getElementById("response").innerHTML = data
+            console.log(data)
+            if (data === 'Account created! Please log in'){
+                this.setState({signedUp: true})
+            };
+        } 
+        )      
+    }
 
     render(){
         const signedUp = this.state.signedUp
@@ -363,10 +363,6 @@ class NewListing extends React.Component{
     }
 
 
-    // handleemail(evt){
-    //     this.setState({lister_email:evt.target.value});
-    // }
-
     handlecategory(evt){
         this.setState({category:evt.target.value});
     }
@@ -387,9 +383,6 @@ class NewListing extends React.Component{
         this.setState({time_to:evt.target.value});
     }
 
-
-
-    
 
     componentDidMount(){
        
@@ -579,9 +572,6 @@ class Listing extends React.Component{
             loggedIn = false
         }
 
-        // this.state = {
-        //     loggedIn
-        // }
 
         this.state = {listings: [],
                     qty:1,
@@ -594,6 +584,7 @@ class Listing extends React.Component{
         this.handleqty=this.handleqty.bind(this);  
         this.handlecurrentlocation= this.handlecurrentlocation.bind(this)
     }
+
 
     googleMapRef = React.createRef()
 
@@ -648,13 +639,8 @@ class Listing extends React.Component{
             })
     
             .then(data => { 
-                this.setState({add:data,})
-                // console.log(data)
-                // console.log(this.state)
-                
+                this.setState({add:data,}) 
             }) 
-        
-
         })   
         .catch(err => console.log(err));  
 
@@ -670,7 +656,6 @@ class Listing extends React.Component{
             if (this.state.mapLoaded == true) {
                 return;
             }
-        // console.log(this.googleMap)
         
         this.googleMap = this.createGoogleMap()
         
@@ -678,14 +663,11 @@ class Listing extends React.Component{
         this.info = this.infowindow()
         this.setState({mapLoaded: true})
         
-        
-        
         });     
     }
     
 
   
-    
 
     createGoogleMap = () => 
       
@@ -728,7 +710,7 @@ class Listing extends React.Component{
                     <br>
                     Serves = ${a.serves} 
                     <br>
-                    Pickup = ${a.time_from}- ${a.time_to} on ${a.listing_date}
+                    Pickup = ${a.time_from.slice(0,-3)}- ${a.time_to.slice(0,-3)} on ${a.listing_date}
                 </p>
             </div>
             `)
@@ -897,6 +879,7 @@ class Listing extends React.Component{
 }
     
 
+
 class Logout extends React.Component {
     constructor(){
         super();
@@ -917,7 +900,8 @@ class Logout extends React.Component {
         )
     }
 }
-    
+ 
+
 
 class Order extends React.Component{
     constructor(props){
@@ -1026,8 +1010,6 @@ class YourListing extends React.Component{
 
         .then(data => { 
             this.setState({your_listing:data})
-            // console.log(data)
-            // console.log(this.state)
             if (this.state.your_listing.length<1){
                 document.getElementById("message").innerHTML = "You have not posted any listing";
                 return
@@ -1046,7 +1028,6 @@ class YourListing extends React.Component{
     }
     
     handleupdate(listing){
-        // alert(listing.listing_id);
         fetch('/lister-updates', 
         {
           method: 'POST',

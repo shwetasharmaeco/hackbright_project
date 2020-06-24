@@ -76,9 +76,7 @@ for n in range(15):
     city = choice(cities_list)
     city_id = city.city_id
     listing_date = fake.date()
-    # time_from= fake.time()
     time_from= "03:55"
-    # time_to = fake.time()
     time_to = "05:00"
    
 
