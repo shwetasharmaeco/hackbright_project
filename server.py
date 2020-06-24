@@ -75,11 +75,11 @@ def all_listings():
    
     # converts time to PST #
     date_today = datetime.utcnow() - timedelta(hours=7)
-    print("today:", date_today.date())
+    
 
     # strips time from date document
     final_time = date_today.strftime("%H:%M")
-    print("final time", final_time)
+    
     #coverts string to time object
     final_time_time= datetime.strptime(final_time, '%H:%M').time()
     
@@ -379,7 +379,7 @@ def handle_sign_in():
     if user:
         
         if user.password == data["password"] and user.email == data["email"]:
-            # session["user_id"] = user.user_id
+            
             return jsonify({"user_id": user.user_id})
         else:
             return jsonify({"error": "Wrong email or password"})

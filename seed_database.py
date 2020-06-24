@@ -22,12 +22,7 @@ c = ["San Francisco", "Oakland", "Fremont", "San Jose", "Stockton", "Santa Clara
 for city in c:
 
     zipcode = fake.postcode()
-
     city_name = city
-    # if city_name in cities_names:
-    #     city_name = choice(c)
-    # else:
-    #     cities_names.append(city_name)
     
     city = crud.create_city(city_name, zipcode)
     cities_list.append(city)  
@@ -43,6 +38,7 @@ for n in range(10):
     street_address =  fake.address()
     phone = fake.phone_number()
     password = fake.word()
+
     user = crud.create_user(name, phone, street_address,email, password, city_id)
     users_list.append(user)
 
@@ -54,6 +50,7 @@ categories_list=[]
 cat = ["Home Cooked", "Restaurant food", "Packaged food", "Vegetables", "Fruits", "Other"]
 for n in cat:
     category_name = n
+    
     category = crud.create_category(category_name)
     categories_list.append(category)
 
