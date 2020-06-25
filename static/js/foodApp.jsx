@@ -17,12 +17,11 @@ class App extends React.Component{
                 <div className = "App">
                     <Route exact strict path="/"   component={Login}/>
                     <Route exact strict path="/signup" component={Signup}/>
-                    <Route exact strict path="/listings" component={Listing}/> 
+                    <Route exact strict path="/listings" render={()=><Listing/>}/> 
                     <Route exact strict path="/new-listing" component={NewListing}/>
                     <Route exact strict path = "/logout" component = {Logout}/>
                     <Route exact strict path = "/order" component = {Order}/>
                     <Route exact strict path = "/your-listings" component={YourListing}/> 
-                    {/* <Route exact strict path ="/map" component={GoogleMap}/>  */}
                 </div>
             </Router>
         </div>  
@@ -62,8 +61,6 @@ class Login extends React.Component{
 
     handlesubmit(evt){
         evt.preventDefault();
-    
-        console.log(this.state);
  
     
         fetch('/sign-in', 
@@ -84,7 +81,8 @@ class Login extends React.Component{
         )
         .then(data => { 
             if ("error" in data){
-                document.getElementById("response").innerHTML = data["error"]
+                
+                alert(data["error"])
                 return
         }
 
@@ -93,10 +91,11 @@ class Login extends React.Component{
                 localStorage.setItem("token", "shweta")
                 localStorage.setItem("user_id", data["user_id"] )
                 this.setState({loggedIn:true})
-                // document.getElementById("response").innerHTML = "Logged In" 
+                
             }
             else{
-                document.getElementById("response").innerHTML = "Something went wrong"
+                
+                alert("Something went wrong")
             }
         });
 
@@ -107,8 +106,7 @@ class Login extends React.Component{
     render(){
         const loggedIn = this.state.loggedIn
         if (loggedIn){
-            console.log("hello world")
-            
+            console.log("I am redirecting you from login component")
             return(
             <Redirect to="/listings"/>
             )
@@ -235,8 +233,9 @@ class Signup extends React.Component{
         })
 
         .then(data => { 
-            document.getElementById("response").innerHTML = data
-            console.log(data)
+           
+            alert(data)
+            
             if (data === 'Account created! Please log in'){
                 this.setState({signedUp: true})
             };
@@ -332,7 +331,6 @@ class NewListing extends React.Component{
         this.handlecategory = this.handlecategory.bind(this);
         this.handleaddress = this.handleaddress.bind(this);
         this.handlecity= this.handlecity.bind(this);
-        // this.handleemail= this.handleemail.bind(this);
         this.handledescription = this.handledescription.bind(this);
         this.handletimefrom = this.handletimefrom.bind(this);
         this.handletimeto = this.handletimeto.bind(this);
@@ -385,6 +383,7 @@ class NewListing extends React.Component{
 
 
     componentDidMount(){
+        console.log("svxhxh")
        
     
         fetch('/categories')
@@ -401,11 +400,9 @@ class NewListing extends React.Component{
         
             .then(data_c => { 
                 this.setState({cities:data_c,})
-                console.log(data_c)
-                console.log(this.state)
+                
             })
-            console.log(data_)
-            console.log(this.state)
+           
         })    
     }
 
@@ -459,8 +456,9 @@ class NewListing extends React.Component{
         })
 
         .then(data => { 
-            document.getElementById("response").innerHTML = data
-            console.log(data)
+            
+            alert(data)
+            
         }) 
         
         
@@ -481,11 +479,7 @@ class NewListing extends React.Component{
                         <br></br>
                         <br></br>
                             <form id= "new-listing">
-                        
-                                    {/* <label>Email</label>
-                                    <input type= "text" name="email" value= {this.state.lister_email} onChange={this.handleemail}></input>
-                                    <br></br>
-                                    <br></br> */}
+                    
 
                         
                                     <label>Listing Name</label>
@@ -503,8 +497,6 @@ class NewListing extends React.Component{
                                     <br></br>
                                     <br></br>
                         
-                                    {/* <label>City</label>
-                                    <input type="text" name="city" value= {this.state.city} onChange={this.handlecity}></input> */}
                                    
                                     <label>City</label>
                                     <select className="city" onClick={this.handlecity} required>
@@ -520,11 +512,6 @@ class NewListing extends React.Component{
                                     <br></br>
 
 
-                                    {/* <label>City</label>
-                                        <select className="city" onClick={this.handlecity}>
-                                        {cities.map(c =>(
-                                        <option key={c["city_name"]} value={c["city_name"]}>{c["city_name"]}</option>))}
-                                        </select> */}
     
                                     <label>Listing description</label>
                                     <input type="text" name="description" value= {this.state.description} onChange={this.handledescription}></input>
@@ -536,7 +523,7 @@ class NewListing extends React.Component{
                                         {categories.map(c =>(
                                         <option key={c["category_id"]} value={c["category_name"]}>{c["category_name"]}</option>))}
                                     </select>
-                                    {/* <input type="text" name="category" value= {this.state.category} onChange={this.handlecategory}></input>*/}
+                                    
                                     <br></br>
                                     <br></br> 
 
@@ -562,8 +549,9 @@ class NewListing extends React.Component{
 }
 
 
-
 class Listing extends React.Component{
+    googleMapRef = React.createRef()
+    
     constructor(props){
         super(props);
         const token = localStorage.getItem("token")
@@ -582,27 +570,23 @@ class Listing extends React.Component{
                     }
                    
         this.handleqty=this.handleqty.bind(this);  
-        this.handlecurrentlocation= this.handlecurrentlocation.bind(this)
+        
     }
 
 
-    googleMapRef = React.createRef()
+   
 
     handleqty(e){
         this.setState({qty:e.target.value},  
             );
     }
 
-    handlecurrentlocation(e){
-        this.setState({current_location:e.target.value},  
-            );
-    }
-   
+
+  
 
     componentDidMount(){
-        if (this.state.mapLoaded == true) {
-            return;
-        }
+        console.log("I am within listing")
+        
         fetch('/all-listings',
         {
             method: 'POST',
@@ -611,7 +595,7 @@ class Listing extends React.Component{
                 'Content-Type': 'application/json'
             },
             body:JSON.stringify({
-                current_location : this.state.current_location
+                
               })
           
         })
@@ -622,7 +606,7 @@ class Listing extends React.Component{
 
         .then(data => { 
             this.setState({listings:data});
-            // console.log(this.state.listings)
+            
             fetch('/all-addresses',
             {
                 method: 'POST',
@@ -647,7 +631,7 @@ class Listing extends React.Component{
         console.log("loading google map script")
         const googleMapScript = document.createElement('script')
         googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18&libraries=places`
-        // googleMapScript.async = true
+        
         
         window.document.body.appendChild(googleMapScript)
 
@@ -677,7 +661,7 @@ class Listing extends React.Component{
           lat:  37.7749504  ,
           lng:  -122.4507392,
         },
-        // disableDefaultUI: true,
+        
         controlSize: 20,
        
       })
@@ -724,7 +708,8 @@ class Listing extends React.Component{
 
     handlepickup(listing){
         if (this.state.qty > listing.serves){
-            document.getElementById("response").innerHTML = "Not enough food"
+            
+            alert("Not enough food, try with a lower quantity")
             return
         }
         
@@ -752,7 +737,8 @@ class Listing extends React.Component{
         .then(data_ => { 
         if (data_ === "Order Placed"){
             localStorage.setItem("listing_id", listing["listing_id"])
-            document.getElementById("response").innerHTML = data_
+            
+            alert(data_)
 
             fetch('/place-order', 
                 {
@@ -779,17 +765,15 @@ class Listing extends React.Component{
                 return
             }
 
-            console.log(listing)
-            console.log(data_)
-            console.log(this.state)
-            document.getElementById("response").innerHTML = data_
+            alert(data_)
+            
         }) 
     }
 
 
     render(){
         if (this.state.mapLoaded && this.state.add){
-            // console.log(this.info)
+            
              this.placeMarkers(this.info)}
 
         if (this.state.loggedIn === false){
@@ -807,13 +791,7 @@ class Listing extends React.Component{
                     style={{ width: '100%', height: '300px', position:"fixed" }}
                     >
                     </div>
-                                                {/* <div className = "map">
-                                                    <div style={fixedElement}> <GoogleMap/> </div>
-                                                </div> */}
-                                                    {/* <label> Current Location </label>
-                                                    <input type="text" name="dcurrent location" value= {this.state.current_location} onChange={this.handlecurrentlocation}></input>
-                                                    <br></br>
-                                                    <br></br> */}
+                                            
                     
                     <div key = "3" className="all-buttons" style={{ top:"350px"}}>
                         <Link to="/new-listing">
@@ -828,9 +806,7 @@ class Listing extends React.Component{
                             <option key ="4" value="4">4</option>
                         </select>
 
-                        {/* <Link to="/map">
-                        <button type="submit" value = "map">Map</button>
-                        </Link> */}
+                        
                             
                         <Link to="/order">
                         <button type="submit" value = "see-orders">Your Orders</button>
@@ -862,9 +838,7 @@ class Listing extends React.Component{
                                 serves:{listing.serves}<br></br>
                                 address: {listing.address}, {listing.city}<br></br>
                                 pickup time : {listing.time_from.slice(0,-3)} - {listing.time_to.slice(0,-3)} on {listing.listing_date}
-                                {/* <Link to="/Order"> */}
                                 <button type="submit" value="order" onClick={this.handlepickup.bind(this,listing)}> Request pickup</button>
-                                {/* </Link> */}
                                 </li>
                                 </ul>
                                 
@@ -931,9 +905,9 @@ class Order extends React.Component{
         .then(data => { 
             this.setState({orders:data,})
             console.log(data)
-            // console.log(this.state)
+            
             if (this.state.orders.length == 0){
-                document.getElementById("message").innerHTML = "You have no Orders";
+                alert("You have no orders")
                 return
             }
             
@@ -956,6 +930,7 @@ class Order extends React.Component{
                             <li key= {order.listing_id}>
                             <br></br>
                             <br></br>
+                            order id: {order.order_id}<br></br>
                             listing: {order.listing_name}<br></br>
                             address: {order.listing_address}<br></br>
                             pickup time : {order.listing_time_from} - {order.listing_time_to} on {order.listing_date}
@@ -1012,7 +987,8 @@ class YourListing extends React.Component{
         .then(data => { 
             this.setState({your_listing:data})
             if (this.state.your_listing.length<1){
-                document.getElementById("message").innerHTML = "You have not posted any listing";
+                alert("You have not posted any listing")
+                
                 return
             }
             
@@ -1064,7 +1040,7 @@ class YourListing extends React.Component{
                         <button type="submit" value="to-listings">Go back to listings</button>
                     </Link>
                     {this.state.your_listing.map((listing) => (
-                       // let a = parseInt(listing.serves)
+                       
                        
 
                         <div key = {listing.listing_id} className="listing">

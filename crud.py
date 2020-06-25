@@ -3,10 +3,10 @@
 from model import db, User, City, Category, Listing, Order, connect_to_db
 from sqlalchemy.sql import func
 
-def create_city(city_name, zipcode):
+def create_city(city_name):
     """ creates and returns a city object """
 
-    city = City(city_name = city_name, zipcode = zipcode)
+    city = City(city_name = city_name)
 
     db.session.add(city)
     db.session.commit()

@@ -57,14 +57,13 @@ def all_cities():
     cities = crud.all_cities()
     for city in cities:
         c_dict={}
-        c_dict["zipcode"]=city.zipcode
         c_dict["city_name"]=city.city_name
         cities_.append(c_dict)
     
     return json.dumps(cities_)
 
 
-@app.route('/all-listings', methods=["POST"])
+@app.route('/all-listings', methods=["POST","GET"])
 def all_listings():
 
     """ returns a list of all listings in the database """
@@ -180,6 +179,7 @@ def show_orders():
 
     for order in orders:
         dict_o={}
+        dict_o["order_id"] = order.order_id
         o = crud.get_listing_by_id(order.listing_id)
         dict_o["listing_name"] = o.listing_name
         city = crud.get_city_by_id(o.city_id)
@@ -299,7 +299,7 @@ def update_listing():
             return jsonify("Sorry! We do not have enough food")
 
     else:
-        return jsonify("no listing found")
+        return jsonify("No listing found")
         
 
 
@@ -363,7 +363,7 @@ def new_listing():
         return jsonify(f'Thank you {user.name}! Your listing has been added')
     
     else:
-        return jsonify("Please enter correct email")
+        return jsonify("Listing could not be created")
 
 
 
@@ -372,9 +372,12 @@ def new_listing():
 def handle_sign_in():
 
     """Log user into application if user information is in database"""
-
+    
     data = request.get_json()
+    
+    
     user = crud.get_user_by_email(data["email"])
+
     
     if user:
         

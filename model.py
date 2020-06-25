@@ -12,9 +12,9 @@ class City(db.Model):
                     primary_key = True,
                     nullable = False)
 
-    zipcode = db.Column(db.String)
+    # zipcode = db.Column(db.String)
 
-    city_name = db.Column (db.String, nullable = False, unique= True)
+    city_name = db.Column (db.String, nullable = False)
 
 
     def __repr__(self):
