@@ -27,10 +27,16 @@ app.jinja_env.undefined = StrictUndefined
 
 # Base route #
 
-@app.route('/')
-def homepage():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+
+def show_app(path):    
+    return render_template('index.html')
+
+# @app.route('/')
+# def homepage():
     
-    return render_template ('index.html')
+#     return render_template ('index.html')
 
 
 
@@ -275,7 +281,7 @@ def update_listing():
             crud.update_serves_for_listing_by_id(listing.listing_id,serves)
             listing = crud.get_listing_by_id(data_["listing_id"])
             city = crud.get_city_by_id(listing.city_id)
-            body_for_user = f"Hi there! You requested pickup for {listing.listing_name} \nFrom {listing.listing_address}, {city.city_name} {city.zipcode} \nPickup between {listing.time_from} - {listing.time_to} "
+            body_for_user = f"Hi there! You requested pickup for {listing.listing_name} \nFrom {listing.listing_address}, {city.city_name}  \nPickup between {listing.time_from} - {listing.time_to} "
             body_for_lister = f"Hi there! {user.name} will pickup {listing.listing_name} between {listing.time_from} - {listing.time_to}"
             message = client.messages.create(
                               body=body_for_user,

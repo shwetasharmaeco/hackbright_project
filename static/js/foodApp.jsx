@@ -6,6 +6,7 @@ const Link =  window.ReactRouterDOM.Link;
 const Prompt =  window.ReactRouterDOM.Prompt;
 const Switch = window.ReactRouterDOM.Switch;
 const Redirect = window.ReactRouterDOM.Redirect;
+const withRouter = window.ReactRouterDOM.withRouter;
 
 
 
@@ -15,13 +16,15 @@ class App extends React.Component{
         <div>
             <Router>
                 <div className = "App">
-                    <Route exact strict path="/"   component={Login}/>
-                    <Route exact strict path="/signup" component={Signup}/>
-                    <Route exact strict path="/listings" render={()=><Listing/>}/> 
-                    <Route exact strict path="/new-listing" component={NewListing}/>
-                    <Route exact strict path = "/logout" component = {Logout}/>
-                    <Route exact strict path = "/order" component = {Order}/>
-                    <Route exact strict path = "/your-listings" component={YourListing}/> 
+                <Switch>
+                    <Route  path="/signup" exact component={Signup}/>
+                    <Route  path="/" key = "render" exact component={Login}/>
+                    <Route  path="/listings"  key = "render" exact render={()=><Listing/>}/> 
+                    <Route  path="/new-listing" exact component={NewListing}/>
+                    <Route  path = "/logout" exact component = {Logout}/>
+                    <Route  path = "/order" exact component = {Order}/>
+                    <Route  path = "/your-listings" exact  component={YourListing}/> 
+                </Switch>
                 </div>
             </Router>
         </div>  
@@ -108,39 +111,86 @@ class Login extends React.Component{
         if (loggedIn){
             console.log("I am redirecting you from login component")
             return(
-            <Redirect to="/listings"/>
+            <Redirect key ="render" to="/listings"/>
             )
         }
 
         else{
             return(
-        
-                <div>    
-                    <h1>Login Page</h1>
-                    <p id="response"> </p>
-                        <form id = "sign-in">
-                            <input type= "text" placeholder = "Email" name="email" value= {this.state.email} onChange={this.handleemail} required></input>
-                            <br></br>
-                            <br></br>
-                            <input type= "text" placeholder = "password" name="password" value= {this.state.password} onChange={this.handlepassword} required></input>
-                            <button type="submit" form="login" value="Submit" onClick={this.handlesubmit}>Submit</button>
-                            
-                        </form>
-                        <br></br>
-                        <br></br>
-                        <Link to="/signup">
-                            <button type="submit" value= "in">Create Account</button>
-                        </Link>
-                        
-                    <br></br>
-                    <br></br>    
+                
+                <div  id="slides" className = "carousel slide" data-ride="carousel" > 
+                {/* <ul className="carousel-indicators">
+                    <li data-target="#slides" data-slide-to="0" className="active"></li>
+                    <li data-target="#slides" data-slide-to="1" ></li>
+                    <li data-target="#slides" data-slide-to="2" ></li>
+
+                </ul>
+                <div className="carousel-inner">
+                    <div className="carousel-item active">
+                        <img src="/static/images/kitchen.jpeg" width="100%" height="100%"/>
+                        <div className="carousel-caption">
+
+                            <h1 className="display-2">HomNom</h1>
+                            <h3>Login</h3>
+                        </div>
+                    </div>
+
+                    <div className="carousel-item">
+                        <img src="/static/images/kitchen.jpeg" width="100%" height="150%"></img>
+                    </div>
+
+                    <div className="carousel-item">
+                        <img src="/static/images/veggies.jpeg" width="100%" height="150%"></img>
+                    </div>
+                </div> */}
+                
                    
-                </div>
+                <body>
+
+
+                <div className="modal-dialog text-center">
+                    <div className="col-sm-8 main-section">
+                        <div className="modal-content">
+
+                        <form className="col-12">
+                                    <div className="form-group">
+                                        <input type="email" className="form-control"  name="email" value= {this.state.email} onChange={this.handleemail} aria-describedby="emailHelp" placeholder="Enter email"/> 
+                                    </div>
+
+                                    <div className="form-group">
+                                        <input type="password" className="form-control" id="exampleInputPassword1" name="password" value= {this.state.password} onChange={this.handlepassword}placeholder="Password"/>
+                                    </div>
+
+                                    
+                                    <button type="submit" className="btn " onClick={this.handlesubmit}>
+                                        Login
+                                    </button>
+
+                            </form>
+
+
+                            <div className="col-12 forgot">
+                            <Link to="/signup">
+                                New User?
+                            </Link>
+                            </div>
+
+
+                        </div>  
+                    </div>
+                </div>   
+                </body>       
+            </div>
+                           
+                
             );
         }
     }
     
 }
+
+ 
+                  
 
 
 class Signup extends React.Component{
@@ -252,12 +302,12 @@ class Signup extends React.Component{
         else{
             const cities = this.state.cities
             return (
-                <div>  
+                <div className="signup" id="signup">  
             
                     <h1>Create an Account</h1>
                     <p id="response"></p>
             
-                        <form id= "sign-up">
+                        <form id= "sign_up_form">
 
                                 <label>Name</label>
                                 <input type= "text" name="name" value= {this.state.name} onChange={this.handlename} required></input>
@@ -315,10 +365,10 @@ class NewListing extends React.Component{
         this.state = {
                     listing_name : "",
                     serves:"",
-                    category:"",
+                    category:"Home Cooked",
                     description:"",
                     listing_address: "",
-                    city:"",
+                    city:"San Francisco",
                     zipcode:"",
                     date:"",
                     time_from:"",
@@ -383,9 +433,7 @@ class NewListing extends React.Component{
 
 
     componentDidMount(){
-        console.log("svxhxh")
-       
-    
+        
         fetch('/categories')
         .then(function(response){
             return response.json()
@@ -468,17 +516,17 @@ class NewListing extends React.Component{
         const categories = this.state.categories
         const cities = this.state.cities
         return (
-                <div>  
+                <div className="new_listing" id="new_listing" key= "new_listing">  
             
                     <h1>Upload a Listing</h1>
                     <p id="response"></p>
 
-                        <Link to="/listings">
+                        <Link key = "render" to="/listings">
                             <button type="submit" value= "Logout">Go back to Browsing</button>
                         </Link>
                         <br></br>
                         <br></br>
-                            <form id= "new-listing">
+                            <form id= "new_listing_form">
                     
 
                         
@@ -650,6 +698,7 @@ class Listing extends React.Component{
         });     
     }
     
+    
 
   
 
@@ -777,15 +826,59 @@ class Listing extends React.Component{
              this.placeMarkers(this.info)}
 
         if (this.state.loggedIn === false){
-            return (<Redirect to ="/"/>)
+            return (<Redirect key = "render" to ="/"/>)
         }
 
         else{
             return (
-                <div style ={{width:"100%", height:"100%"}}>  
-                    
+                <div className = "all_listings" id= "all_listings" >  
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top">
+                      <div className= "container-fluid" id="listings_buttons" >
+                        <Link to="/listings" className= "navbar-brand">HN</Link>
+
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div className="collapse navbar-collapse" id="navbarResponsive">
+                            <ul className="navbar-nav ml-auto">
+                                <li key= "for" className="nav-item active">
+                                
+                                    <select id = "qty" onChange={this.handleqty}>
+                                        <option key ="1" value="1">1</option>
+                                        <option key ="2" value="2">2</option>
+                                        <option key ="3" value="3">3</option>
+                                        <option key ="4" value="4">4</option>
+                                    </select>
+
+                                </li>
+                                <li key= "ul" className="nav-item active">
+                                    <Link to="/new-listing" className="nav-link" value= "new-listing"> Upload Listing </Link>
+                                </li>
+
+                                <li key="orders" className="nav-item active">
+                                    <Link to="/order" className="nav-link" type="submit" href= "/order" value = "see-orders" > Orders </Link>  
+                                </li>
+
+                                <li key="listings" className="nav-item active">
+                                    <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" > Listings </Link>  
+                                </li>
+
+                                <li key="logout" className="nav-item active">
+                                    <Link to="/logout" className="nav-link" > Log Out </Link>
+                                </li>
+                            </ul>
+                        </div>
+
+                     
+                      </div>
+                    </nav>
+
+
                     <div
-                    key="2"
+                    id = "map"
+                    key="render_map"
                     id="google-map"
                     ref={this.googleMapRef}
                     style={{ width: '100%', height: '300px', position:"fixed" }}
@@ -793,39 +886,14 @@ class Listing extends React.Component{
                     </div>
                                             
                     
-                    <div key = "3" className="all-buttons" style={{ top:"350px"}}>
-                        <Link to="/new-listing">
-                        <button type="submit" value= "new-listing">Upload new Listing</button>
-                        </Link>
-                            
-                        <label>For</label>
-                        <select onChange={this.handleqty}>
-                            <option key ="1" value="1">1</option>
-                            <option key ="2" value="2">2</option>
-                            <option key ="3" value="3">3</option>
-                            <option key ="4" value="4">4</option>
-                        </select>
-
-                        
-                            
-                        <Link to="/order">
-                        <button type="submit" value = "see-orders">Your Orders</button>
-                        </Link>
-                        <Link to="/your-listings">
-                        <button type="submit" value = "see-listings">Your Listings</button>
-                        </Link>  
-
-                        <Link to="/logout">
-                        <button type="submit" value= "Logout">Log Out</button>
-                        </Link>
-                    </div>
+                  
 
                     
-                    <div className="aftermap" key="4" style={{top:"400px", }}>
+                    <div id="show_listings" key="render_listings" style={{top:"400px", }}>
                         <p id="response" key = "1"></p>
                         {this.state.listings.map((listing,index) => (
                     
-                            <div key = {listing.listing_id} className="listing">
+                            <div id = "each-listing" key = {listing.listing_id} >
                                 <ul>
                                 <li key= {listing.listing_id}>
                                 <br></br>
@@ -863,7 +931,7 @@ class Logout extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div id= "logout">
                 You are logged out.
                 <br></br>
                 <br></br>
@@ -904,7 +972,7 @@ class Order extends React.Component{
 
         .then(data => { 
             this.setState({orders:data,})
-            console.log(data)
+            
             
             if (this.state.orders.length == 0){
                 alert("You have no orders")
@@ -918,16 +986,16 @@ class Order extends React.Component{
     render(){
        
         return(
-        <div>
+        <div className= "user_orders" id="user_orders" key="user_orders">
             <h1 id = "message"></h1>
-            <Link to="/listings">
+            <Link key="render" to="/listings">
                 <button type="submit" value="to-listings">Go back to listings</button>
             </Link>
             {this.state.orders.map((order) => (
         
-                    <div key = {order.listing_id} className="listing">
+                    <div id = "each_user_order" key = {order.order_id} className="listing">
                         <ul>
-                            <li key= {order.listing_id}>
+                            <li key= {order.order_id}>
                             <br></br>
                             <br></br>
                             order id: {order.order_id}<br></br>
@@ -1034,7 +1102,7 @@ class YourListing extends React.Component{
     render(){
     
         return(
-                <div>
+                <div id="user_listings">
                     <h1 id="message"></h1>
                     <Link to="/listings">
                         <button type="submit" value="to-listings">Go back to listings</button>
@@ -1043,7 +1111,7 @@ class YourListing extends React.Component{
                        
                        
 
-                        <div key = {listing.listing_id} className="listing">
+                        <div id= "each_user_listing" key = {listing.listing_id} className="listing">
                          
                             <ul>
                                 <li key= {listing.listing_id}>
