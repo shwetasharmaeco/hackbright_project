@@ -1,0 +1,19 @@
+                                       Table "public.users"
+  Column  |         Type          | Collation | Nullable |                Default                 
+----------+-----------------------+-----------+----------+----------------------------------------
+ user_id  | integer               |           | not null | nextval('users_user_id_seq'::regclass)
+ name     | character varying(50) |           | not null | 
+ city_id  | integer               |           |          | 
+ address  | character varying     |           | not null | 
+ phone    | character varying     |           | not null | 
+ email    | character varying     |           | not null | 
+ password | character varying     |           | not null | 
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (user_id)
+    "users_email_key" UNIQUE CONSTRAINT, btree (email)
+Foreign-key constraints:
+    "users_city_id_fkey" FOREIGN KEY (city_id) REFERENCES cities(city_id)
+Referenced by:
+    TABLE "listings" CONSTRAINT "listings_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+    TABLE "orders" CONSTRAINT "orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(user_id)
+

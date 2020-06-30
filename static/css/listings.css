@@ -1,0 +1,63 @@
+.my-container{
+	height:100vh;
+	width: 100%;
+
+}
+
+.my-row{
+	/*border: 3px solid #f5a883;*/
+	/* border-radius: 25px;*/
+	  margin-top: 10px;
+
+}
+
+.my-col{
+border: 8px solid #b7c06f;
+ border-radius: 25px;
+  background: #dde0b6;
+  padding: 40px;
+  opacity:.70;
+
+
+}
+
+#new_listing {
+	font-family: 'Oswald', sans-serif;
+	size: 5px;
+	color: #9b3c2e;
+}
+
+label{
+	color:green;
+}
+
+
+.my-map{
+border: 5px solid black;
+ border-radius: 0px;
+ 
+  padding: 40px;
+  position:fixed;
+  width: 100%;
+    position: fixed;
+  background: #fff;
+  z-index: 10;
+  width: 100%;
+
+}
+
+.pickup{
+	font-size: 20px;
+	padding: 10px 24px;
+	 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	 width: 100%;
+
+}
+
+#logout{
+	font-family: 'Oswald', sans-serif;
+	size: 5px;
+	color: #9b3c2e;
+	font-size: 24px
+}
+

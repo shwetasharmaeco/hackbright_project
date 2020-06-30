@@ -9,7 +9,6 @@ const Redirect = window.ReactRouterDOM.Redirect;
 const withRouter = window.ReactRouterDOM.withRouter;
 
 
-
 class App extends React.Component{
     render(){
         return(
@@ -49,8 +48,11 @@ class Login extends React.Component{
         this.handleemail= this.handleemail.bind(this);
         this.handlepassword= this.handlepassword.bind(this);
         this.handlesubmit = this.handlesubmit.bind(this);
+
+       
     }
 
+   
 
     handleemail(evt){
         this.setState({email:evt.target.value});
@@ -60,7 +62,7 @@ class Login extends React.Component{
     handlepassword(evt){
         this.setState({password:evt.target.value});
     }
-
+  
 
     handlesubmit(evt){
         evt.preventDefault();
@@ -101,6 +103,7 @@ class Login extends React.Component{
                 alert("Something went wrong")
             }
         });
+       
 
     }   
 
@@ -118,46 +121,24 @@ class Login extends React.Component{
         else{
             return(
                 
-                <div  id="slides" className = "carousel slide" data-ride="carousel" > 
-                {/* <ul className="carousel-indicators">
-                    <li data-target="#slides" data-slide-to="0" className="active"></li>
-                    <li data-target="#slides" data-slide-to="1" ></li>
-                    <li data-target="#slides" data-slide-to="2" ></li>
-
-                </ul>
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <img src="/static/images/kitchen.jpeg" width="100%" height="100%"/>
-                        <div className="carousel-caption">
-
-                            <h1 className="display-2">HomNom</h1>
-                            <h3>Login</h3>
-                        </div>
-                    </div>
-
-                    <div className="carousel-item">
-                        <img src="/static/images/kitchen.jpeg" width="100%" height="150%"></img>
-                    </div>
-
-                    <div className="carousel-item">
-                        <img src="/static/images/veggies.jpeg" width="100%" height="150%"></img>
-                    </div>
-                </div> */}
-                
-                   
-                <body>
-
+                <div  id="login"
+                style={{backgroundImage: "url(" + " /static/images/green.jpg" + ")",
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'}}> 
+            
 
                 <div className="modal-dialog text-center">
                     <div className="col-sm-8 main-section">
                         <div className="modal-content">
+                        <h1 class="logo">HomNom</h1>
 
                         <form className="col-12">
-                                    <div className="form-group">
+                                    <div className="form-group login">
                                         <input type="email" className="form-control"  name="email" value= {this.state.email} onChange={this.handleemail} aria-describedby="emailHelp" placeholder="Enter email"/> 
                                     </div>
 
-                                    <div className="form-group">
+                                    <div className="form-group login">
                                         <input type="password" className="form-control" id="exampleInputPassword1" name="password" value= {this.state.password} onChange={this.handlepassword}placeholder="Password"/>
                                     </div>
 
@@ -179,7 +160,7 @@ class Login extends React.Component{
                         </div>  
                     </div>
                 </div>   
-                </body>       
+                    
             </div>
                            
                 
@@ -304,53 +285,82 @@ class Signup extends React.Component{
             return (
                 <div className="signup" id="signup">  
             
-                    <h1>Create an Account</h1>
+                    <h1 id="new_listing">Create an Account</h1>
                     <p id="response"></p>
-            
-                        <form id= "sign_up_form">
 
-                                <label>Name</label>
-                                <input type= "text" name="name" value= {this.state.name} onChange={this.handlename} required></input>
-                                <br></br>
-                                <br></br>
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                      <div className= "container-fluid" id="go_back">
 
-                                <label>Contact Number</label>
-                                <input type="text" name="number" value= {this.state.number} onChange={this.handlenumber} required></input>
-                                <br></br>
-                                <br></br>
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
 
-                                <label>Address</label>
-                                <input type="text" name="address" value= {this.state.address} onChange={this.handleaddress} required></input>
-                                <br></br>
-                                <br></br>
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                    <li key= "ul" className="nav-item active">
+                                        <Link to="/" className="nav-link" value= "new-listing"> Go back </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
 
-                                <label>City</label>
-                                <select className="city" onClick={this.handlecity} required>
-                                    {cities.map(c =>(
-                                    <option key={c["city_id"]} value={c["city_name"]}>{c["city_name"]}</option>))}
+
+
+
+
+
+                    <form>
+                    <div className="form-row">
+                    <div className="form-group col-md-4">
+                        <label>Name</label>
+                        <input type="text" className="form-control" id="inputlisting" value= {this.state.name} onChange={this.handlename}/>
+                    </div>
+
+
+                        <div className="form-group col-md-4">
+                        <label >Contact Number</label>
+                        <input type="text" className="form-control" id="phone" value= {this.state.number} onChange={this.handlenumber} />
+                    </div>
+
+                    </div>
+
+                    
+                    <div className="form-row">
+                    <div className="form-group col-md-8">
+                        <label>Address</label>
+                        <input type="text" className="form-control" id="inputAddress" value= {this.state.address} onChange={this.handleaddress}  placeholder="1234 Main St"/>
+                    </div>
+
+                    <div className="form-row">
+                        <div className="form-group col-md-4">
+                            <label>City</label>
+                                <select className="form-control" onClick={this.handlecity} >
+                                    {cities.map(city =>(
+                                    <option  key={city["city_id"]} value={city["city_name"]}>{city["city_name"]}</option>))}
                                 </select>
+                        </div>
 
-                                <br></br>
-                                <br></br> 
+                        <div className="form-row">
+                            <div className="form-group col-md-6">
+                            <label>Email</label>
+                            <input type="email" className="form-control" value= {this.state.email} onChange={this.handleemail} placeholder="Email"/>
+                            </div>
 
-                                <label>Email</label>
-                                <input type="text" name="email" value= {this.state.email} onChange={this.handleemail} required></input>
-                                <br></br>
-                                <br></br>
+                            <div className="form-group col-md-6">
+                            <label for="inputPassword4">Password</label>
+                            <input type="password" className="form-control" id="inputPassword4" value= {this.state.password} onChange={this.handlepassword}  placeholder="Password"/>
+                            </div>
+                        </div>
 
-                                <label>Password</label>
-                                <input type="text" name="password" value= {this.state.password} onChange={this.handlepassword} required></input>
-                                <br></br>
-                                <br></br>
-                                <button type="submit" form="signup" value="Submit" onClick={this.handlesubmit}>Submit</button>
+                    </div>
+                    </div>
+                    
+                    <button type="submit" className="btn btn-primary" onClick={this.handlesubmit}>Submit</button>
+                    </form>
 
-                        </form>
-                        <br></br>
-                        <br></br>
-
-                        <Link to="/">
-                            <button type="submit" value= "in">Go Back</button>
-                        </Link>
+                        
                 </div>
             );
         }
@@ -518,79 +528,111 @@ class NewListing extends React.Component{
         return (
                 <div className="new_listing" id="new_listing" key= "new_listing">  
             
-                    <h1>Upload a Listing</h1>
+                    <h1 id="new_listing">Upload a Listing</h1>
                     <p id="response"></p>
 
-                        <Link key = "render" to="/listings">
-                            <button type="submit" value= "Logout">Go back to Browsing</button>
-                        </Link>
-                        <br></br>
-                        <br></br>
-                            <form id= "new_listing_form">
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                      <div className= "container-fluid" id="go_back">
+
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                    <li key= "ul" className="nav-item active">
+                                        <Link to="/listings" className="nav-link" value= "new-listing"> Go back to Browsing</Link>
+                                    </li>
+
+                                    <li key="orders" className="nav-item active">
+                                    <Link to="/order" className="nav-link" type="submit" href= "/order" value = "see-orders" > Orders </Link>  
+                                    </li>
+
+                                    <li key="listings" className="nav-item active">
+                                        <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" > Listings </Link>  
+                                    </li>
+
+                                    <li key="logout" className="nav-item active">
+                                        <Link to="/logout" className="nav-link" > Log Out </Link>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+
+                    <form>
+                    <div className="form-row">
+                    <div className="form-group col-md-5">
+                        <label>Listing Name</label>
+                        <input type="text" className="form-control" id="inputlisting" value= {this.state.listing_name} onChange={this.handlename} placeholder="Chicken/ Rice/ Curry "/>
+                    </div>
+
+                        <div className="form-group col-md-5">
+                            <label>Listing Category</label>
+                                <select className="form-control" id="inputcity" onClick={this.handlecategory}>
+                                    {categories.map(c =>(
+                                    <option key={c["category_id"]} value={c["category_name"]}>{c["category_name"]}</option>))}
+                                </select>
+                        </div>
+
+                        <div className="form-group col-md-2">
+                        <label >Serves</label>
+                        <input type="text" className="form-control" id="serves" value= {this.state.serves} onChange={this.handleserves} placeholder="2"/>
+                    </div>
+
+                    </div>
+
+                    <div className="form-group">
+                        <label>Listing Description</label>
+                        <input type="text" className="form-control" id="inputAddress" value= {this.state.description} onChange={this.handledescription} />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Address</label>
+                        <input type="text" className="form-control" id="inputAddress" value= {this.state.listing_address} onChange={this.handleaddress}  placeholder="1234 Main St"/>
+                    </div>
+
+                    <div className="form-row">
+                        <div className="form-group col-md-6">
+                            <label>City</label>
+                                <select className="form-control" onClick={this.handlecity} >
+                                    {cities.map(city =>(
+                                    <option  key={city["city_id"]} value={city["city_name"]}>{city["city_name"]}</option>))}
+                                </select>
+                        </div>
+
+                        
+                        <div className="form-group col-md-2">
+                        <label>Zip</label>
+                        <input type="text" className="form-control" id="inputZip" value= {this.state.zipcode} onChange={this.handlezipcode}/>
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                    <div className="form-group col-md-4">
+                        <label>Available On</label>
+                        <input type="text" className="form-control" id="inputlisting" value= {this.state.date} onChange={this.handledate}  placeholder="YYYY-MM-DD"/>
+                    </div>
+
+                        <div className="form-group col-md-4">
+                            <label>Available from</label>
+                            <input type="text" className="form-control" id="itime"  value= {this.state.time_from} onChange={this.handletimefrom}placeholder="HH:MM"/>
+                        </div>
+
+                        <div className="form-group col-md-4">
+                            <label>Available till</label>
+                            <input type="text" className="form-control" id="itime" value= {this.state.time_to} onChange={this.handletimeto} placeholder="HH:MM"/>
+                        </div>
+
+                    </div>
+
                     
+                    <button type="submit" className="btn btn-primary" onClick={this.handlesubmit}>Post my listing</button>
+                    </form>
 
-                        
-                                    <label>Listing Name</label>
-                                    <input type="text" name="listing_name" value= {this.state.listing_name} onChange={this.handlename} required></input>
-                                    <br></br>
-                                    <br></br>
-
-                                    <label>Serves</label>
-                                    <input type= "text" name="serves" value= {this.state.serves} onChange={this.handleserves} required></input>
-                                    <br></br>
-                                    <br></br>
-                        
-                                    <label>Address</label>
-                                    <input type="text" name="address" value= {this.state.listing_address} onChange={this.handleaddress} required></input>
-                                    <br></br>
-                                    <br></br>
-                        
-                                   
-                                    <label>City</label>
-                                    <select className="city" onClick={this.handlecity} required>
-                                        {cities.map(city =>(
-                                        <option key={city["city_id"]} value={city["city_name"]}>{city["city_name"]}</option>))}
-                                    </select>
-                                    <br></br>
-                                    <br></br>
-
-                                    <label>Zipcode</label>
-                                    <input type="text" name="zipcode" value= {this.state.zipcode} onChange={this.handlezipcode}></input>
-                                    <br></br>
-                                    <br></br>
-
-
-    
-                                    <label>Listing description</label>
-                                    <input type="text" name="description" value= {this.state.description} onChange={this.handledescription}></input>
-                                    <br></br>
-                                    <br></br>
-                        
-                                    <label>Listing Category</label>
-                                    <select className="category" onClick={this.handlecategory} required>
-                                        {categories.map(c =>(
-                                        <option key={c["category_id"]} value={c["category_name"]}>{c["category_name"]}</option>))}
-                                    </select>
-                                    
-                                    <br></br>
-                                    <br></br> 
-
-                                    <label>Available On</label>
-                                    <input type="text" name="date" placeholder="YYYY-MM-DD" value= {this.state.date} onChange={this.handledate} required></input>
-                                    <br></br>
-                                    <br></br>
-
-                                    <label>Available From</label>
-                                    <input type="text" name="time_from" placeholder="HH:MM" value= {this.state.time_from} onChange={this.handletimefrom} required></input>
-                                    <br></br>
-                                    <br></br>
-
-                                    <label>Available till</label>
-                                    <input type="text" name="time_to" placeholder="HH:MM" value= {this.state.time_to} onChange={this.handletimeto} required></input>
-                                    <br></br>
-                                    <br></br>
-                                    <button type="submit" form="newlisting" value="Submit" onClick={this.handlesubmit}>Submit</button>
-                            </form>
                 </div>
         );
     }
@@ -615,6 +657,7 @@ class Listing extends React.Component{
                     add : [],
                     mapLoaded: false,
                     loggedIn,
+                    
                     }
                    
         this.handleqty=this.handleqty.bind(this);  
@@ -831,9 +874,13 @@ class Listing extends React.Component{
 
         else{
             return (
-                <div className = "all_listings" id= "all_listings" >  
-                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top">
-                      <div className= "container-fluid" id="listings_buttons" >
+                <div  id= "all_listings"  className= "container" style={{backgroundImage: "url(" + " /static/images/marble.jpeg" + ")",
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'}}>  
+
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" style={{color:"green"}}>
+                      <div className= "container-fluid" id="listings_buttons">
                         <Link to="/listings" className= "navbar-brand">HN</Link>
 
                         <button className= "navbar-toggler" type="button" data-toggle="collapse"
@@ -845,7 +892,7 @@ class Listing extends React.Component{
                             <ul className="navbar-nav ml-auto">
                                 <li key= "for" className="nav-item active">
                                 
-                                    <select id = "qty" onChange={this.handleqty}>
+                                    <select className="form-control" id = "qty" onChange={this.handleqty}>
                                         <option key ="1" value="1">1</option>
                                         <option key ="2" value="2">2</option>
                                         <option key ="3" value="3">3</option>
@@ -876,39 +923,42 @@ class Listing extends React.Component{
                     </nav>
 
 
-                    <div
-                    id = "map"
-                    key="render_map"
-                    id="google-map"
-                    ref={this.googleMapRef}
-                    style={{ width: '100%', height: '300px', position:"fixed" }}
-                    >
-                    </div>
+                    
                                             
                     
                   
 
                     
-                    <div id="show_listings" key="render_listings" style={{top:"400px", }}>
+                    <div className="container my-container" id="show_listings" key="render_listings" >
                         <p id="response" key = "1"></p>
+                            <div className="row">
+                            <div 
+                            className=" col-lg-12 col-md-8 my-map sticky-top"
+                            key="render_map"
+                            id="google-map"
+                            ref={this.googleMapRef}
+                            style={{ width: '100%', height: '300px'}}
+                            >
+                            </div>
+                            </div>
                         {this.state.listings.map((listing,index) => (
                     
-                            <div id = "each-listing" key = {listing.listing_id} >
-                                <ul>
-                                <li key= {listing.listing_id}>
+                            <div className="row my-row" id = "each-listing" key = {listing.listing_id} >
+                                
+                                <div className="col-lg-12 col-md-8 my-col" key= {listing.listing_id}>
                                 <br></br>
                                 <br></br>
-                                listing_id : {listing.listing_id}<br></br>
-                                user : {listing.user}<br></br>
-                                listing: {listing.name}<br></br>
-                                category : {listing.category}<br></br>
-                                description : {listing.description}<br></br>
-                                serves:{listing.serves}<br></br>
-                                address: {listing.address}, {listing.city}<br></br>
-                                pickup time : {listing.time_from.slice(0,-3)} - {listing.time_to.slice(0,-3)} on {listing.listing_date}
-                                <button type="submit" value="order" onClick={this.handlepickup.bind(this,listing)}> Request pickup</button>
-                                </li>
-                                </ul>
+                                <b>{listing.name}</b><br></br>
+                                Listing Id : {listing.listing_id}<br></br>
+                                Posted By : {listing.user}<br></br>
+                                Category : {listing.category}<br></br>
+                                Description : {listing.description}<br></br>
+                                Serves: {listing.serves}<br></br>
+                                Address: {listing.address}, {listing.city}<br></br>
+                                Pickup Window : {listing.time_from.slice(0,-3)} - {listing.time_to.slice(0,-3)} on {listing.listing_date}
+                                <button className="btn pickup " type="submit" value="order" onClick={this.handlepickup.bind(this,listing)}> Request pickup</button>
+                                </div>
+                                
                                 
                             </div>
                     )   
@@ -931,15 +981,39 @@ class Logout extends React.Component {
     }
     render() {
         return (
-            <div id= "logout">
-                You are logged out.
-                <br></br>
-                <br></br>
-                <Link to="/">
-                    <button>Login Again
-                    </button>
-                </Link>
-            </div>
+            <div  id="logout"
+            style={{backgroundImage: "url(" + " /static/images/green.jpg" + ")",
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'}}> 
+        
+
+            <div className="modal-dialog text-center">
+                <div className="col-sm-8 main-section">
+                    <div className="modal-content">
+                    <h1 id="logout">You are logged out</h1>
+
+                    <form className="col-12">
+                                
+                                <Link to="/">
+                                <button type="submit" className="btn ">
+                                    Login Again
+                                </button>
+                                </Link>
+
+                        </form>
+
+
+                        <div className="col-12 loginagain">
+                        
+                        </div>
+
+
+                    </div>  
+                </div>
+            </div>   
+                
+        </div>
         )
     }
 }
@@ -973,12 +1047,6 @@ class Order extends React.Component{
         .then(data => { 
             this.setState({orders:data,})
             
-            
-            if (this.state.orders.length == 0){
-                alert("You have no orders")
-                return
-            }
-            
         }) 
     }
 
@@ -987,10 +1055,35 @@ class Order extends React.Component{
        
         return(
         <div className= "user_orders" id="user_orders" key="user_orders">
-            <h1 id = "message"></h1>
-            <Link key="render" to="/listings">
-                <button type="submit" value="to-listings">Go back to listings</button>
-            </Link>
+            <h1 id = "new_listing"> Your Orders</h1>
+
+            <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                      <div className= "container-fluid" id="go_back">
+
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                    <li key= "ul" className="nav-item active">
+                                        <Link to="/listings" className="nav-link" value= "new-listing"> Go back to Browsing</Link>
+                                    </li>
+
+                                    <li key="listings" className="nav-item active">
+                                        <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" > Listings </Link>  
+                                    </li>
+
+                                    <li key="logout" className="nav-item active">
+                                        <Link to="/logout" className="nav-link" > Log Out </Link>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+           
             {this.state.orders.map((order) => (
         
                     <div id = "each_user_order" key = {order.order_id} className="listing">
@@ -1054,11 +1147,6 @@ class YourListing extends React.Component{
 
         .then(data => { 
             this.setState({your_listing:data})
-            if (this.state.your_listing.length<1){
-                alert("You have not posted any listing")
-                
-                return
-            }
             
         }) 
        
@@ -1103,39 +1191,62 @@ class YourListing extends React.Component{
     
         return(
                 <div id="user_listings">
-                    <h1 id="message"></h1>
-                    <Link to="/listings">
-                        <button type="submit" value="to-listings">Go back to listings</button>
-                    </Link>
-                    {this.state.your_listing.map((listing) => (
-                       
-                       
+                    <h1 id = "new_listing"> Your Orders</h1>
+                    
 
+
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                      <div className= "container-fluid" id="go_back">
+
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+
+                            <div className="collapse navbar-collapse" id="navbarResponsive">
+                                <ul className="navbar-nav ml-auto">
+                                    <li key= "ul" className="nav-item active">
+                                        <Link to="/listings" className="nav-link" value= "new-listing"> Go back to Browsing</Link>
+                                    </li>
+
+                                    <li key="listings" className="nav-item active">
+                                        <Link to="/order" className="nav-link" type="submit" value = "see-listings" > Orders </Link>  
+                                    </li>
+
+                                    <li key="logout" className="nav-item active">
+                                        <Link to="/logout" className="nav-link" > Log Out </Link>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+           
+
+
+                    {this.state.your_listing.map((listing) => (
                         <div id= "each_user_listing" key = {listing.listing_id} className="listing">
                          
                             <ul>
                                 <li key= {listing.listing_id}>
-                                
-                                    listing_id : {listing.listing_id}<br></br>
-                                    listing: {listing.name}<br></br>
-                                    category : {listing.category}<br></br>
-                                    description : {listing.description}<br></br>
-                                    serves:{listing.serves}<br></br>
-                                    address: {listing.address}, {listing.city}<br></br>
-                                    pickup time : {listing.time_from} - {listing.time_to} on {listing.listing_date}<br></br>
+                                    <b>{listing.name}</b><br></br>
+                                    Listing Id : {listing.listing_id}<br></br>
+                                    Category : {listing.category}<br></br>
+                                    Description : {listing.description}<br></br>
+                                    Serves:{listing.serves}<br></br>
+                                    Address: {listing.address}, {listing.city}<br></br>
+                                    Pickup Window : {listing.time_from} - {listing.time_to} on {listing.listing_date}<br></br>
 
                                     
                                     <label>Update Serves</label>
-                                    <select className="serves" onChange={this.handleupdateserves}>
-                                    
-
+                                    <select className="form-control" onChange={this.handleupdateserves}>
                                     {this.serveDropdownFn(listing.serves)}
                                     
                                                 
                         )}
                     ))
                                     </select>
-                                    <button type="submit" value="order" onClick={this.handleupdate.bind(this,listing)}> Update</button>
+                                    <button className="btn" type="submit" value="order" onClick={this.handleupdate.bind(this,listing)}> Update</button>
                                     
                                 </li>
                             </ul>

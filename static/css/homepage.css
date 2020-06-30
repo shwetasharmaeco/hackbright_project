@@ -1,16 +1,47 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 
-body{
-	font-family: 'Roboto', sans-serif;
-	background: url(/static/images/green.jpg) no-repeat center center fixed;
-	background-size:cover;
 
+
+html {
+    height: 100vh;
+    width:100%
 }
 
-.col-12{
-	margin-top:25px;
+/*body{
+	background: url("/static/images/blurred.jpeg") no-repeat;
+	position: center;
+	size: cover;
+}*/
 
+html, body, #root, #login {
+    min-height: 100% !important;
+    height: 100%;
+    width:100%;
+}
+
+*{
+	margin:0px;
+	padding:0px;
+	box-sizing:border-box;
+}
+
+
+h1{
+	 font-family: 'Lobster', cursive;
+        font-weight: 300;
+        line-height: 1.1;
+        color: #48ca3b;
+        line-height:2;
+        margin-right: 60px;
+        font-size: 500%;      
+}
+
+
+
+form{
+	margin: 0 auto; 
+   text-align: center center;
 }
 
 .main-section{
@@ -24,35 +55,70 @@ body{
 	opacity: .95;
 	padding:0 18px;
 	box-shadow: : 0px 0px 3px #848484;
+	margin-top: 10px
+	height: 50px;
+	/*vertical-align: middle;*/
+/*margin-right: 20px;
+background:rgb(166,166,166); 
+filter:alpha(opacity=00); 
+background:rgba(166,166,166,0.0);
+border: 10px solid transparent*/
 }
 
-.form-group{
+.login{
 	margin-bottom:25px;
-	margin-top:25px;
+	margin-top:35px;
 }
 
+/*input.form-control{
+	color: transparent;  
+}*/
+/*
+*:focus {outline:none !important}*/
 
-.form-group input {
+
+/*
+input.form-control:hover{
+	color: transparent;
+
+}*/
+
+/*.form-group ::placeholder { 
+  color: #d50102;
+  opacity: 1; 
+  background-color: transparent
+}*/
+
+
+
+.login input {
 	height:42px;
 	border-radius: 5px;
 	border:0;
 	font-size:18px;
 	padding-left:54px;
-
+	/*background:rgb(166,166,166); 
+	filter:alpha(opacity=00); 
+	background:rgba(166,166,166,0.0);
+	border: solid */
+	
 }
 
-.form-group::before{
+.login::before{
 	font-family: 'Font Awesome\ 5 Free';
 	content: "\f007";
 	position: absolute;
 	font-size:22px;
-	color: #555e60;
+	color: #a6b401;
 	left:28px;
 	padding-top:4px;
+
+
 }
 
-.form-group:last-of-type::before{
+.login:last-of-type::before{
 	content: "\f023";
+	
 }
 
 
@@ -60,27 +126,43 @@ button{
 	width:40%;
 	margin: 5px 0 25px;
 }
+
 .btn{
 	background-color: #27c2a5;
-	color:#fff;
+	color:#5c8a03;
 	font-size: 19px;
-	padding:7px 14px;
-	border-radius: 5px;
+	padding:10px 14px;
+	border-radius: 5px ;
 	border-bottom: 4px solid #219882;
+	/*margin-right: 100px*/
+
 
 }
 
 .btn:hover, .btn:focus{
 	background-color: :#25a890!important;
 	border-bottom: 4px solid #25a890!important;
+	 transition-duration: 0.4s;
 }
 
 
 .forgot{
-	padding:5px 0 25px;
+	padding:15px 0 25px;
+	color: yellow;
+	font-weight: bolder;
+	
 
 }
 
 .forgot a{
-	color:#c2fbfe;
+	color:#6c0102;
+
+	
+}
+
+
+.logout{
+		font-family: 'Oswald', sans-serif;
+	size: 5px;
+	color: #9b3c2e;
 }
