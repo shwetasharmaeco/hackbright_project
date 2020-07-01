@@ -77,6 +77,8 @@ def all_listings():
     main_list=[] 
     listings = crud.all_listings()
     data = request.get_json()
+    curr_user = crud.get_user_by_id(data["user_id"])
+    
    
     # converts time to PST #
     date_today = datetime.utcnow() - timedelta(hours=7)
@@ -111,6 +113,7 @@ def all_listings():
         dict_["time_from"]=time_from
         time_to = datetime.strptime(listing.time_to, '%H:%M').time()
         dict_["time_to"]=time_to
+        dict_["curr_user"]=curr_user.name
 
         # listings filters starts #
         if dict_["serves"] == 0  :     
@@ -216,6 +219,8 @@ def show_listings():
 
         l = crud.get_listing_by_id(listing.listing_id)
         category = crud.get_category_by_id(l.category_id)
+       
+        
 
         city = crud.get_city_by_id(l.city_id)
         dict_l["listing_id"] = l.listing_id
@@ -228,6 +233,7 @@ def show_listings():
         dict_l["listing_date"]=  l.listing_date.strftime("%A %d %B, %Y")
         dict_l["time_from"]=l.time_from
         dict_l["time_to"]=l.time_to
+    
         all_listings.append(dict_l)
 
     return json.dumps(all_listings)

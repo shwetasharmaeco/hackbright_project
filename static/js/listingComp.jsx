@@ -1,3 +1,6 @@
+
+
+
 class Listing extends React.Component{
     googleMapRef = React.createRef()
     
@@ -39,6 +42,7 @@ class Listing extends React.Component{
                 'Content-Type': 'application/json'
             },
             body:JSON.stringify({
+                user_id: localStorage.getItem("user_id")
                 
               })
         })
@@ -49,6 +53,8 @@ class Listing extends React.Component{
 
         .then(data => { 
             this.setState({listings:data});
+            localStorage.setItem("user_name", data[0]["curr_user"])
+            
             
             fetch('/all-addresses',
             {
@@ -145,7 +151,7 @@ class Listing extends React.Component{
 
     handlepickup(listing){
         if (this.state.qty > listing.serves){ 
-            alert("Not enough food, try with a lower quantity")
+            alert("Not enough food, please try with a lower quantity")
             return
         }
         
@@ -197,7 +203,8 @@ class Listing extends React.Component{
 
             .then(data => { 
                 localStorage.removeItem("listing_id")
-                console.log(data)}) 
+                }
+                ) 
                 return
             }
 
@@ -217,6 +224,7 @@ class Listing extends React.Component{
         }
 
         else{
+            
             return (
                 <div  id= "all_listings"  className= "container" style={{backgroundImage: "url(" + " /static/images/marble.jpeg" + ")",
                 backgroundPosition: 'center',
@@ -234,6 +242,12 @@ class Listing extends React.Component{
 
                         <div className="collapse navbar-collapse" id="navbarResponsive">
                             <ul className="navbar-nav ml-auto">
+
+
+                                <li key="name" className="nav-item active">
+                                    Hi, {localStorage.getItem("user_name")}
+                                </li>
+
                                 <li key= "for" className="nav-item active">
                                 
                                     <select className="form-control" id = "qty" onChange={this.handleqty}>

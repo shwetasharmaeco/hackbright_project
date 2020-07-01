@@ -112,8 +112,7 @@ def group_listings_by_id(user_id):
     # return db.session.query(Listing.listing_id).group_by(Listing.user_id, Listing.listing_id).having(Listing.user_id == user_id).all()
     return Listing.query.filter(Listing.user_id==user_id).all()
 
-# def delete_listing():
-#     Listing.query.filter(Listing.serves == 0).delete()
+
 
 def commit():
     db.session.commit()
