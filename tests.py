@@ -24,7 +24,7 @@ class FlaskTestsRoutes(TestCase):
         """Test homepage page."""
 
         result = self.client.get("/")
-        self.assertIn(b"Welcome", result.data)
+        self.assertIn(b"HomNom", result.data)
 
 
     def test_signup(self):

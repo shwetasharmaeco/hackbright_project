@@ -16,6 +16,7 @@ class Listing extends React.Component{
                     add : [],
                     mapLoaded: false,
                     loggedIn,
+                    
                     }
                    
         this.handleqty=this.handleqty.bind(this);  
@@ -23,18 +24,13 @@ class Listing extends React.Component{
     }
 
 
-   
-
     handleqty(e){
         this.setState({qty:e.target.value},  
             );
     }
 
 
-   
-
     componentDidMount(){
-        
         fetch('/all-listings',
         {
             method: 'POST',
@@ -45,7 +41,6 @@ class Listing extends React.Component{
             body:JSON.stringify({
                 
               })
-          
         })
 
         .then(function(res){
@@ -76,7 +71,6 @@ class Listing extends React.Component{
         })   
         .catch(err => console.log(err));  
 
-        console.log("loading google map script")
         const googleMapScript = document.createElement('script')
         googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18&libraries=places`
         
@@ -97,9 +91,6 @@ class Listing extends React.Component{
         
         });     
     }
-    
-
-  
 
     createGoogleMap = () => 
       
@@ -152,11 +143,8 @@ class Listing extends React.Component{
     }
   
 
-
-
     handlepickup(listing){
-        if (this.state.qty > listing.serves){
-            
+        if (this.state.qty > listing.serves){ 
             alert("Not enough food, try with a lower quantity")
             return
         }
@@ -225,70 +213,89 @@ class Listing extends React.Component{
              this.placeMarkers(this.info)}
 
         if (this.state.loggedIn === false){
-            return (<Redirect to ="/"/>)
+            return (<Redirect key = "render" to ="/"/>)
         }
 
         else{
             return (
-                <div style ={{width:"100%", height:"100%"}}>  
-                    
-                    <div
-                    key="2"
-                    id="google-map"
-                    ref={this.googleMapRef}
-                    style={{ width: '100%', height: '300px', position:"fixed" }}
-                    >
-                    </div>
-                                            
-                    
-                    <div key = "3" className="all-buttons" style={{ top:"350px"}}>
-                        <Link to="/new-listing">
-                        <button type="submit" value= "new-listing">Upload new Listing</button>
-                        </Link>
-                            
-                        <label>For</label>
-                        <select onChange={this.handleqty}>
-                            <option key ="1" value="1">1</option>
-                            <option key ="2" value="2">2</option>
-                            <option key ="3" value="3">3</option>
-                            <option key ="4" value="4">4</option>
-                        </select>
+                <div  id= "all_listings"  className= "container" style={{backgroundImage: "url(" + " /static/images/marble.jpeg" + ")",
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'}}>  
 
-                        
-                            
-                        <Link to="/order">
-                        <button type="submit" value = "see-orders">Your Orders</button>
-                        </Link>
-                        <Link to="/your-listings">
-                        <button type="submit" value = "see-listings">Your Listings</button>
-                        </Link>  
+                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" style={{color:"green"}}>
+                      <div className= "container-fluid" id="listings_buttons">
+                        <Link to="/listings" className= "navbar-brand">HN</Link>
 
-                        <Link to="/logout">
-                        <button type="submit" value= "Logout">Log Out</button>
-                        </Link>
-                    </div>
+                        <button className= "navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" value= "new-listing">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
 
+                        <div className="collapse navbar-collapse" id="navbarResponsive">
+                            <ul className="navbar-nav ml-auto">
+                                <li key= "for" className="nav-item active">
+                                
+                                    <select className="form-control" id = "qty" onChange={this.handleqty}>
+                                        <option key ="1" value="1">1</option>
+                                        <option key ="2" value="2">2</option>
+                                        <option key ="3" value="3">3</option>
+                                        <option key ="4" value="4">4</option>
+                                    </select>
+
+                                </li>
+                                <li key= "ul" className="nav-item active">
+                                    <Link to="/new-listing" className="nav-link" value= "new-listing"> Upload Listing </Link>
+                                </li>
+
+                                <li key="orders" className="nav-item active">
+                                    <Link to="/order" className="nav-link" type="submit" href= "/order" value = "see-orders" > Orders </Link>  
+                                </li>
+
+                                <li key="listings" className="nav-item active">
+                                    <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" > Listings </Link>  
+                                </li>
+
+                                <li key="logout" className="nav-item active">
+                                    <Link to="/logout" className="nav-link" > Log Out </Link>
+                                </li>
+                            </ul>
+                        </div>
+
+                     
+                      </div>
+                    </nav>
                     
-                    <div className="aftermap" key="4" style={{top:"400px", }}>
+                    <div className="container my-container" id="show_listings" key="render_listings" >
                         <p id="response" key = "1"></p>
+                            <div className="row">
+                                <div 
+                                className=" col-lg-12 col-md-8 my-map sticky-top"
+                                key="render_map"
+                                id="google-map"
+                                ref={this.googleMapRef}
+                                style={{ width: '100%', height: '300px'}}
+                                >
+                                </div>
+                            </div>
                         {this.state.listings.map((listing,index) => (
                     
-                            <div key = {listing.listing_id} className="listing">
-                                <ul>
-                                <li key= {listing.listing_id}>
+                            <div className="row my-row" id = "each-listing" key = {listing.listing_id} >
+                                
+                                <div className="col-lg-12 col-md-8 my-col" key= {listing.listing_id}>
                                 <br></br>
                                 <br></br>
-                                listing_id : {listing.listing_id}<br></br>
-                                user : {listing.user}<br></br>
-                                listing: {listing.name}<br></br>
-                                category : {listing.category}<br></br>
-                                description : {listing.description}<br></br>
-                                serves:{listing.serves}<br></br>
-                                address: {listing.address}, {listing.city}<br></br>
-                                pickup time : {listing.time_from.slice(0,-3)} - {listing.time_to.slice(0,-3)} on {listing.listing_date}
-                                <button type="submit" value="order" onClick={this.handlepickup.bind(this,listing)}> Request pickup</button>
-                                </li>
-                                </ul>
+                                <b>{listing.name}</b><br></br>
+                                Listing Id : {listing.listing_id}<br></br>
+                                Posted By : {listing.user}<br></br>
+                                Category : {listing.category}<br></br>
+                                Description : {listing.description}<br></br>
+                                Serves: {listing.serves}<br></br>
+                                Address: {listing.address}, {listing.city}<br></br>
+                                Pickup Window : {listing.time_from.slice(0,-3)} - {listing.time_to.slice(0,-3)} on {listing.listing_date}
+                                <button className="btn pickup " type="submit" value="order" onClick={this.handlepickup.bind(this,listing)}> Request pickup</button>
+                                </div>
+                                
                                 
                             </div>
                     )   
@@ -300,80 +307,7 @@ class Listing extends React.Component{
         }
     }
 }
-
-
-
-
-
-
-class Listing extends React.Component{
-
-    componentDidMount(){
-        
-        fetch('/all-listings',
-        {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                
-              })
-          
-        })
-
-        .then(function(res){
-            return res.json()
-        })
-
-        .then(data => { 
-            this.setState({listings:data});
-            
-            fetch('/all-addresses',
-            {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-               
-            } 
-            )
-        
-            .then(function(res){
-                return res.json()
-            })
     
-            .then(data => { 
-                this.setState({add:data,}) 
-            }) 
-        })   
-        .catch(err => console.log(err));  
-
-        console.log("loading google map script")
-        const googleMapScript = document.createElement('script')
-        googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB_A07jL5otsFc8gDAvgZgcbHugwh9xO18&libraries=places`
-        
-        
-        window.document.body.appendChild(googleMapScript)
 
 
-        googleMapScript.addEventListener("load", () => { 
-            if (this.state.mapLoaded == true) {
-                return;
-            }
-        
-        this.googleMap = this.createGoogleMap()
-        
-
-        this.info = this.infowindow()
-        this.setState({mapLoaded: true})
-        
-        });     
-    }
-
-    render(){
-        return("dbhjdhd")
-    }
-}
+ 
