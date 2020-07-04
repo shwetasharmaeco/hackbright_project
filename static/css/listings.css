@@ -1,5 +1,5 @@
 .my-container{
-	height:100vh;
+
 	width: 100%;
 
 }
@@ -28,18 +28,18 @@ border: 8px solid #b7c06f;
 }
 
 label{
-	color:green;
+	color:black;
 }
 
 
 .my-map{
-border: 5px solid black;
- border-radius: 0px;
+
+ border-radius: 1.0rem;
  
   padding: 40px;
   position:fixed;
   width: 100%;
-    position: fixed;
+ position: fixed;
   background: #fff;
   z-index: 10;
   width: 100%;
@@ -61,3 +61,9 @@ border: 5px solid black;
 	font-size: 24px
 }
 
+li {
+    margin-right: 40px;
+}
+.nav2 li {
+    margin-right: 10px;
+}

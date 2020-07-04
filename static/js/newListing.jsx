@@ -160,11 +160,10 @@ class NewListing extends React.Component{
         const cities = this.state.cities
         return (
                 <div className="new_listing" id="new_listing" key= "new_listing">  
-            
-                    <h1 id="new_listing">Upload a Listing</h1>
 
-                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                    <nav className="navbar navbar-expand-md navbar-dark sticky-top" style = {{backgroundColor: "#e2bd19"}}  >
                       <div className= "container-fluid" id="go_back">
+                      <Link className="navbar-brand" style={{color:"black" ,fontWeight:"bold"}}> Upload a listing</Link>
 
                         <button className= "navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive" value= "new-listing">
@@ -172,21 +171,22 @@ class NewListing extends React.Component{
                         </button>
 
                             <div className="collapse navbar-collapse" id="navbarResponsive">
+
                                 <ul className="navbar-nav ml-auto">
                                     <li key= "ul" className="nav-item active">
-                                        <Link to="/listings" className="nav-link" value= "new-listing"> Go back to Browsing</Link>
+                                        <Link to="/listings" className="nav-link" value= "new-listing" style={{color:"black"}}> Go back to Browsing</Link>
                                     </li>
 
                                     <li key="orders" className="nav-item active">
-                                    <Link to="/order" className="nav-link" type="submit" href= "/order" value = "see-orders" > Orders </Link>  
+                                    <Link to="/order" className="nav-link" type="submit" href= "/order" value = "see-orders"  style={{color:"black"}}> Orders </Link>  
                                     </li>
 
                                     <li key="listings" className="nav-item active">
-                                        <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" > Listings </Link>  
+                                        <Link to="/your-listings" className="nav-link" type="submit" value = "see-listings" style={{color:"black"}}> Listings </Link>  
                                     </li>
 
-                                    <li key="logout" className="nav-item active">
-                                        <Link to="/logout" className="nav-link" > Log Out </Link>
+                                    <li key="logout" className="nav-item active" >
+                                        <Link to="/logout" className="nav-link" style={{color:"black"}} > Log Out </Link>
                                     </li>
 
                                 </ul>
@@ -261,8 +261,9 @@ class NewListing extends React.Component{
 
                     </div>
 
-                    
-                    <button type="submit" className="btn btn-primary" onClick={this.handlesubmit}>Post my listing</button>
+                    <div ClassName= "row" style={{justifyContent:"center", display:"flex"}}>
+                    <button type="submit" className="btn-primary btn-lg col-2" onClick={this.handlesubmit} style={{margin:"0.5rem", backgroundColor:"#e2bd19", border: "#e2bd19", color:"black"  }}>Post my listing</button>
+                    </div>
                     </form>
 
                 </div>

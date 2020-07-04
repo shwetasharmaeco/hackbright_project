@@ -84,12 +84,11 @@ class YourListing extends React.Component{
     
         return(
                 <div id="user_listings">
-                    <h1 id = "new_listing"> Your Orders</h1>
-                    
-
-
-                    <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" >
+                    <nav className="navbar navbar-expand-md navbar-dark sticky-top" style = {{backgroundColor: "#e2bd19"}} >
                       <div className= "container-fluid" id="go_back">
+
+                      <Link className="navbar-brand" style={{color:"black", fontWeight:"bold"}}>
+                            Your Listings</Link>
 
                         <button className= "navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive" value= "new-listing">
@@ -99,15 +98,19 @@ class YourListing extends React.Component{
                             <div className="collapse navbar-collapse" id="navbarResponsive">
                                 <ul className="navbar-nav ml-auto">
                                     <li key= "ul" className="nav-item active">
-                                        <Link to="/listings" className="nav-link" value= "new-listing"> Go back to Browsing</Link>
+                                        <Link to="/listings" className="nav-link" value= "new-listing" style={{color:"black"}}> Go back to Browsing</Link>
+                                    </li>
+
+                                    <li key="ul" className="nav-item active">
+                                        <Link to="/new-listing" className="nav-link" value="new-listing" style={{color:"black"}}> Upload Listing </Link>
                                     </li>
 
                                     <li key="listings" className="nav-item active">
-                                        <Link to="/order" className="nav-link" type="submit" value = "see-listings" > Orders </Link>  
+                                        <Link to="/order" className="nav-link" type="submit" value = "see-listings" style={{color:"black"}}> Orders </Link>  
                                     </li>
 
                                     <li key="logout" className="nav-item active">
-                                        <Link to="/logout" className="nav-link" > Log Out </Link>
+                                        <Link to="/logout" className="nav-link" style={{color:"black"}} > Log Out </Link>
                                     </li>
 
                                 </ul>
@@ -121,7 +124,7 @@ class YourListing extends React.Component{
                         <div id= "each_user_listing" key = {listing.listing_id} className="listing">
                          
                             <ul>
-                                <li key= {listing.listing_id}>
+                                <li key= {listing.listing_id} style={{textAlign:'center', borderBottom:"1px solid black"}}>
                                     <b>{listing.name}</b><br></br>
                                     Listing Id : {listing.listing_id}<br></br>
                                     Category : {listing.category}<br></br>
@@ -130,17 +133,16 @@ class YourListing extends React.Component{
                                     Address: {listing.address}, {listing.city}<br></br>
                                     Pickup Window : {listing.time_from} - {listing.time_to} on {listing.listing_date}<br></br>
 
+                                    <div className="row" style={{justifyContent:"center"}}>
+                                    <label className="col-1" style={{margin:"0.5rem", marginTop:'1rem', color:'#e2bd19', fontWeight:'bold'}}>Set Serves</label>
                                     
-                                    <label>Update Serves</label>
-                                    <select className="form-control" onChange={this.handleupdateserves}>
-                                    {this.serveDropdownFn(listing.serves)}
-                                    
-                                                
-                        )}
-                    ))
+                                    <select className="form-control col-1" onChange={this.handleupdateserves} style={{margin:"0.5rem"}}>
+                                    {this.serveDropdownFn(listing.serves)}               
+                                )}
+                                ))
                                     </select>
-                                    <button className="btn" type="submit" value="order" onClick={this.handleupdate.bind(this,listing)}> Update</button>
-                                    
+                                    <button className=" btn-secondary btn-sm col-1" type="submit" value="order" onClick={this.handleupdate.bind(this,listing)} style={{margin:"0.5rem", backgroundColor:"#e2bd19"}}> Update</button>
+                                    </div>
                                 </li>
                             </ul>
             

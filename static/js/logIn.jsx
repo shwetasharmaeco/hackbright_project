@@ -86,28 +86,21 @@ class Login extends React.Component{
             return(
                 
                 <div  id="login">
-                {/* // style={{backgroundImage: "url(" + " /static/images/green.jpg" + ")",
-                // backgroundPosition: 'center',
-                // backgroundSize: 'cover',
-                // backgroundRepeat: 'no-repeat'}}>  */}
-            
+                <h1 style={{ fontSize: '150%', fontFamily: 'Quicksand'}}>"Why waste it when someone can taste it..."</h1>
+                    <div className="col-sm-8 col-lg-4 main-section m-4 m-lg-0">
+                       
+                        <div className="logo"><i class="fa fa-home" aria-hidden="true"></i>HomNom</div>
 
-                <div className="modal-dialog text-center">
-                    <div className="col-sm-8 main-section">
-                        <div className="modal-content">
-                        <h1 className="logo">HomNom</h1>
-
-                        <form className="col-12">
+                        <form className="login-form shadow col-12">
                             <div className="form-group login">
-                                <input type="email" className="form-control"  name="email" value= {this.state.email} onChange={this.handleemail} aria-describedby="emailHelp" placeholder="Enter email"/> 
+                                <input type="email" className="form-control"  name="email" value= {this.state.email} onChange={this.handleemail} aria-describedby="emailHelp" placeholder="Enter email" style={{border: '1px solid #e2bd19'}}/> 
                             </div>
 
                             <div className="form-group login">
-                                <input type="password" className="form-control" id="exampleInputPassword1" name="password" value= {this.state.password} onChange={this.handlepassword}placeholder="Password"/>
+                                <input type="password" className="form-control" id="exampleInputPassword1" name="password" value= {this.state.password} onChange={this.handlepassword} placeholder="Password" style={{border: '1px solid #e2bd19'}}/>
                             </div>
-
                             
-                            <button type="submit" className="btn " onClick={this.handlesubmit}>
+                            <button type="submit" className="btn " onClick={this.handlesubmit} style={{fontFamily: 'PT Serif'}}>
                                 Login
                             </button>
                         </form>
@@ -120,9 +113,9 @@ class Login extends React.Component{
                         </div>
 
 
-                        </div>  
+                        
                     </div>
-                </div>   
+                
                     
                 </div>   
             );

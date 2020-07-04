@@ -11,7 +11,7 @@ class Logout extends React.Component {
     render() {
         return (
             <div  id="logout"
-            style={{backgroundImage: "url(" + " /static/images/green.jpg" + ")",
+            style={{
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat'}}> 

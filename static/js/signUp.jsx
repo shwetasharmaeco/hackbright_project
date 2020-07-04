@@ -162,12 +162,12 @@ class Signup extends React.Component{
                         </div>
 
                         <div className="form-row">
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-md-8">
                             <label>Email</label>
                             <input type="email" className="form-control" value= {this.state.email} onChange={this.handleemail} placeholder="Email"/>
                             </div>
 
-                            <div className="form-group col-md-6">
+                            <div className="form-group col-md-4">
                             <label >Password</label>
                             <input type="password" className="form-control" id="inputPassword4" value= {this.state.password} onChange={this.handlepassword}  placeholder="Password"/>
                             </div>
