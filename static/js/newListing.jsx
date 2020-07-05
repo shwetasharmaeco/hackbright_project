@@ -7,10 +7,10 @@ class NewListing extends React.Component{
         this.state = {
                     listing_name : "",
                     serves:"",
-                    category:"Home Cooked",
+                    category:"",
                     description:"",
                     listing_address: "",
-                    city:"San Francisco",
+                    city:"",
                     zipcode:"",
                     date:"",
                     time_from:"",
@@ -110,6 +110,7 @@ class NewListing extends React.Component{
             alert("Invalid time to entered")
             return
         }
+        console.log(this.state)
         
         fetch('/new-listing', 
            {
@@ -140,7 +141,9 @@ class NewListing extends React.Component{
 
         .then(data => { 
             alert(data) 
+            
             this.setState({listed:true})
+            console.log(this.state)
            
         }) 
      
@@ -159,7 +162,7 @@ class NewListing extends React.Component{
         const categories = this.state.categories
         const cities = this.state.cities
         return (
-                <div className="new_listing" id="new_listing" key= "new_listing">  
+                <div className="new_listing" id="new_listing" key= "new_listing" style={{minHeight: "100%"}}>  
 
                     <nav className="navbar navbar-expand-md navbar-dark sticky-top" style = {{backgroundColor: "#e2bd19"}}  >
                       <div className= "container-fluid" id="go_back">
@@ -195,7 +198,7 @@ class NewListing extends React.Component{
                     </nav>
 
 
-                    <form>
+                    <form className="container upload_listing_form">
                     <div className="form-row">
                     <div className="form-group col-md-5">
                         <label>Listing Name</label>
@@ -204,7 +207,7 @@ class NewListing extends React.Component{
 
                         <div className="form-group col-md-5">
                             <label>Listing Category</label>
-                                <select className="form-control" id="inputcity" onClick={this.handlecategory}>
+                                <select className="form-control" id="inputcity" onChange={this.handlecategory}>
                                     {categories.map(c =>(
                                     <option key={c["category_id"]} value={c["category_name"]}>{c["category_name"]}</option>))}
                                 </select>
@@ -230,7 +233,7 @@ class NewListing extends React.Component{
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>City</label>
-                                <select className="form-control" onClick={this.handlecity} >
+                                <select className="form-control" onChange={this.handlecity} >
                                     {cities.map(city =>(
                                     <option  key={city["city_id"]} value={city["city_name"]}>{city["city_name"]}</option>))}
                                 </select>

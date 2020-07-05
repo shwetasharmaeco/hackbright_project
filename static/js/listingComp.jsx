@@ -231,7 +231,6 @@ class Listing extends React.Component {
 
             return (
                 <div id="all_listings"  style={{
-                    // backgroundImage: "url(" + " /static/images/marble.jpeg" + ")",
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat'
@@ -240,7 +239,7 @@ class Listing extends React.Component {
                     <nav className="navbar navbar-expand-md navbar-dark sticky-top" style = {{backgroundColor: "#e2bd19"}}>
                         <div className="container-fluid" id="listings_buttons">
                         
-                            <Link to="/listings" className="navbar-brand" style={{color:"black"}}><i class="fa fa-home" aria-hidden="true"></i>
+                            <Link to="/listings" className="navbar-brand" style={{color:"black"}}><i className="fa fa-home" aria-hidden="true"></i>
                             HomNom</Link>
 
                             <button className="navbar-toggler" type="button" data-toggle="collapse"

@@ -108,13 +108,13 @@ def all_listings():
         dict_["address"]=listing.listing_address
         dict_["zipcode"]= listing.listing_zipcode
         dict_["city"]= city.city_name
+        
         dict_["listing_date"]=  listing.listing_date.strftime("%A %d %B, %Y")
         time_from = datetime.strptime(listing.time_from, '%H:%M').time()
         dict_["time_from"]=time_from
         time_to = datetime.strptime(listing.time_to, '%H:%M').time()
         dict_["time_to"]=time_to
-        dict_["curr_user"]=curr_user.name
-
+        dict_["curr_user"]= curr_user.name
         # listings filters starts #
         if dict_["serves"] == 0  :     
             continue 
@@ -345,6 +345,7 @@ def new_listing():
     """ creates new listing """
 
     data = request.get_json()
+    print(data)
 
 
     params = urllib.parse.urlencode({"address": f'{data["listing_address"]} {data["city"]} {data["zipcode"]} CA' , "key": API_KEY})
@@ -362,6 +363,7 @@ def new_listing():
     user = crud.get_user_by_id(data["user_id"])
     category = crud.get_category_by_name(data["category"])
     city = crud.get_city_by_name(data["city"])
+    print(city)
 
   
     if user:
