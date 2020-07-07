@@ -207,7 +207,7 @@ class NewListing extends React.Component{
 
                         <div className="form-group col-md-5">
                             <label>Listing Category</label>
-                                <select className="form-control" id="inputcity" onChange={this.handlecategory}>
+                                <select className="form-control" id="inputcity" onClick={this.handlecategory}>
                                     {categories.map(c =>(
                                     <option key={c["category_id"]} value={c["category_name"]}>{c["category_name"]}</option>))}
                                 </select>
@@ -233,7 +233,7 @@ class NewListing extends React.Component{
                     <div className="form-row">
                         <div className="form-group col-md-6">
                             <label>City</label>
-                                <select className="form-control" onChange={this.handlecity} >
+                                <select className="form-control" onClick={this.handlecity} >
                                     {cities.map(city =>(
                                     <option  key={city["city_id"]} value={city["city_name"]}>{city["city_name"]}</option>))}
                                 </select>
