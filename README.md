@@ -24,3 +24,11 @@ HomNom uses geolocation and date-time filter to show food nearby. Each listing d
 
 Users can request food for pickup at most for 4 people per listing. Each time a request is made, listing is updated to reflect current level of servings and an SMS is sent to the user and the poster.
 
+## Built with
+
+* React : Build one page web app which conditinally renders individual components.
+* Python : Backen language.
+* Twilio's REST API : To send an SMS on order confirmation.
+* Google Maps : For easy browsing.
+* SQLAlchemy : To update data schema.
+* Bootstrap : Extensive list of components and Bundled Javascript plugins.
