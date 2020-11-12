@@ -9,3 +9,18 @@ Here is a video demo: https://youtu.be/Jf1RajdgBrE
 A token is generated for easy login for returning users.
 
 ![image](images/login.png)
+
+### Uploading a Listing
+Posters can upload food which would immediately be reflected on map with details of their listing and they also have an option to update servings of their own listings.
+
+![image](images/upload.png)
+
+Posters and Users can see the logs of their listings and orders.
+
+### Browing and Order Page
+![image](images/order_page.png)
+
+HomNom uses geolocation and date-time filter to show food nearby. Each listing displays name, category and description of the food item, address of pickup, time window of food availability and its quantity in terms of servings.
+
+Users can request food for pickup at most for 4 people per listing. Each time a request is made, listing is updated to reflect current level of servings and an SMS is sent to the user and the poster.
+
