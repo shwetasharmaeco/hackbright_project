@@ -26,9 +26,9 @@ Users can request food for pickup at most for 4 people per listing. Each time a 
 
 ## Built with
 
-* React : Build one page web app which conditinally renders individual components.
-* Python : Backen language.
-* Twilio's REST API : To send an SMS on order confirmation.
-* Google Maps : For easy browsing.
-* SQLAlchemy : To update data schema.
-* Bootstrap : Extensive list of components and Bundled Javascript plugins.
+* **React** : Build one page web app which conditinally renders individual components.
+* **Python** : Backen language.
+* **Twilio's REST API** : To send an SMS on order confirmation.
+* **Google Maps** : For easy browsing.
+* **SQLAlchemy** : To update data schema.
+* **Bootstrap** : Extensive list of components and Bundled Javascript plugins.
